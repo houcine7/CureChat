@@ -1,0 +1,14 @@
+<div class="container my-5 flex justify-center mb-20">
+  <div class="flex gap-24">
+    <div
+      class="px-4 border-r border-2 border-white border-r-gray-200 transition-all duration-700 ease-in-out hover:shadow-2xl hover:border-blue-500"
+      *ngFor="let cardItem of data"
+    >
+      <img src="{{ cardItem.img }}" alt="" class="w-24" />
+      <div class="mt-2 text-center">
+        <p class="font-semibold text-base">Over {{ cardItem.number }} of</p>
+        <p class="capitalize font-bold text-blue-400">{{ cardItem.name }}</p>
+      </div>
+    </div>
+  </div>
+</div>
