@@ -14,7 +14,7 @@
   </span> -->
   <div
     *ngIf="showChatBox"
-    class="absolute py-2 py-3S bottom-4 rounded-t-xl right-4 rounded-bl-xl bg-gray-200 border w-96"
+    class="absolute pt-2 bottom-4 rounded-t-xl right-4 bg-gray-200 border w-96"
   >
     <p
       class="px-8 items-center font-bold uppercase border-b border-blue-400 pb-1 flex justify-between"
@@ -26,32 +26,52 @@
       ></i>
     </p>
 
-    <div class="mt-2 group h-96 relative px-2">
-      <p
-        class="message py-1 px-3 bg-blue-300 mr-16 rounded-t-xl rounded-br-xl w-fit"
-      >
-        hello can you please propose me a treatment for this and that and this I
-        feel this and this and that
-      </p>
-      <p
-        class="mt-4 answer message float-right py-1 px-3 bg-green-300 ml-16 rounded-t-xl rounded-bl-xl w-fit"
-      >
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, quas
-        unde sint corporis exercitationem ipsam, est asperiores facere, eos iure
-        vel alias praesentium dignissimos dolore molestias dolorum aperiam
-        quibusdam sit.
-      </p>
+    <div class="group relative">
+      <div class="h-96 overflow-y-scroll my-4 px-2 pb-8">
+        <p
+          class="message py-1 px-3 bg-blue-300 mr-16 float-left rounded-t-xl rounded-br-xl w-fit mb-2 pb-8 h-fit"
+        >
+          hello can you please propose me a treatment for this and that and this
+          I feel this and this and that
+        </p>
+        <p
+          class="answer message float-right py-1 px-3 bg-green-300 ml-16 rounded-t-xl rounded-bl-xl w-fit mb-2 h-fit"
+        >
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, quas
+          unde sint corporis exercitationem ipsam, est asperiores facere, eos
+          iure vel alias praesentium dignissimos dolore molestias dolorum
+          aperiam quibusdam sit.
+        </p>
+        <p
+          class="message py-1 px-3 bg-blue-300 mr-16 float-left rounded-t-xl rounded-br-xl w-fit mb-2 h-fit"
+        >
+          hello can you please propose me a treatment for this and that and this
+          I feel this and this and that
+        </p>
+        <p
+          class="answer message float-right py-1 px-3 bg-green-300 ml-16 rounded-t-xl rounded-bl-xl w-fit mb-2 h-fit"
+        >
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, quas
+          unde sint corporis exercitationem ipsam, est asperiores facere, eos
+          iure vel alias praesentium dignissimos dolore molestias dolorum
+          aperiam quibusdam sit.
+        </p>
+      </div>
 
-      <div class="absolute bottom-0 right-2 left-2">
-        <form>
+      <div class="absolute -bottom-5 right-2 left-0 mt-4">
+        <form [formGroup]="questionFormGroup">
           <div class="relative">
             <textarea
               name="input"
-              class="w-full bg-gray-300 pl-3 outline-none focus:outline-blue-400 pr-8"
+              formControlName="question"
+              class="overflow-x-hidden w-full bg-gray-300 pl-3 outline-none focus:outline-blue-400 pr-8"
             ></textarea>
-            <span class="absolute z-10 right-1 top-2 cursor-pointer">
-              <i class="bi-send text-3xl font-bold"></i
-            ></span>
+            <button
+              class="absolute z-10 right-1 top-2 cursor-pointer"
+              (click)="handelSubmit()"
+            >
+              <i class="bi-send text-3xl font-bold"></i>
+            </button>
           </div>
         </form>
       </div>
