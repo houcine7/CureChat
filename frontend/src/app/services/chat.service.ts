@@ -1,35 +1,43 @@
 import { Injectable } from '@angular/core';
 
-import { Configuration, OpenAIApi } from 'openai';
+import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from 'openai';
 
 import { environment } from '../environments/environment';
 import { Observable, of } from 'rxjs';
+import { MessageRole, OpenaiMessage } from '../components/models/OpenaiMessage';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ChatService {
   openApi!: OpenAIApi;
+  messages: ChatCompletionRequestMessage[];
 
   constructor() {
-    // initialize configurtions
-
+    // initialize configurtions and openai api
     const configuratation = new Configuration({
       apiKey: environment.apikey,
     });
-
-    console.log(environment.apikey);
-    console.log('--------------------------------');
-    console.log(configuratation);
-
     this.openApi = new OpenAIApi(configuratation);
+    // initiate messages
+    this.messages = [
+      {
+        role: 'system',
+        content: 'You are a helpful assistant',
+      },
+      {
+        role: 'system',
+        content: 'please answer only questions related to health',
+      },
+    ];
   }
 
   getdAnswers = async (qst: string): Promise<any> => {
+    this.messages.push({ role: 'user', content: qst });
     const response = await this.openApi
       .createChatCompletion({
         model: 'gpt-3.5-turbo',
-        messages: [{ role: 'user', content: qst }],
+        messages: this.messages,
         temperature: 0, // Higher values means the model will take more risks.
         max_tokens: 3000, // The maximum number of tokens to generate in the completion. Most models have a context length of 2048 tokens (except for the newest models, which support 4096).
         top_p: 1, // alternative to sampling with temperature, called nucleus sampling
@@ -42,6 +50,10 @@ export class ChatService {
 
     console.log(response?.data?.choices[0].message);
 
-    return of(response);
+    if (response?.data?.choices[0].message != undefined) {
+      this.messages.push(response?.data?.choices[0].message);
+    }
+
+    return of(response?.data?.choices[0].message);
   };
 }
