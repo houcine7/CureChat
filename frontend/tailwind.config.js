@@ -6,6 +6,7 @@ module.exports = {
       height: {
         "h-0.5": "2px",
         "h-chat-full": "92vh",
+        "chat-messages": "73vh",
       },
     },
   },

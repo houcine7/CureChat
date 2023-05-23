@@ -7,6 +7,10 @@
   width: 9px;
 }
 
+.messages::-webkit-scrollbar {
+  display: none;
+}
+
 ::-webkit-scrollbar-track {
   background-color: rgb(17 24 39);
   border-radius: 10px;
