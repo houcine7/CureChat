@@ -1,4 +1,4 @@
-<div class="fixed bottom-3 right-4">
+<div class="fixed bottom-3 right-4 z-50">
   <img
     *ngIf="showChatIcon"
     (click)="handelIconClick()"
@@ -14,28 +14,28 @@
   </span> -->
   <div
     *ngIf="showChatBox"
-    class="absolute pt-2 bottom-4 rounded-t-xl right-4 bg-gray-200 border w-96 overflow-hidden pb-10"
+    class="absolute pt-2 bottom-4 rounded-t-xl right-4 bg-gray-600 border w-96 overflow-hidden pb-10"
   >
     <p
-      class="px-8 items-center font-bold uppercase border-b border-blue-400 pb-1 flex justify-between"
+      class="px-8 items-center font-bold uppercase border-b border-blue-400 pb-1 flex justify-between text-white"
     >
       Chat box
       <i
-        class="ml-4 text-sm bg-red-300 rounded px-2 py-1 cursor-pointer bi-x-lg"
+        class="ml-4 text-sm bg-red-300 rounded px-2 py-1 cursor-pointer bi-x-lg transition duration-500 ease-in-out hover:bg-red-600"
         (click)="handelCloseBtnClick()"
       ></i>
     </p>
 
     <div class="group">
-      <div class="h-96 overflow-y-scroll my-4 px-2 pb-10">
+      <div class="h-96 overflow-y-scroll my-4 px-2 pb-12">
         <div *ngFor="let item of chatMessages">
           <p
-            class="message py-1 px-3 bg-blue-300 mr-16 float-left rounded-t-2xl rounded-br-2xl w-fit mb-2 h-fit"
+            class="message py-1 px-3 bg-blue-300 float-right rounded-t-2xl rounded-bl-2xl w-fit mb-4 h-fit"
           >
-            {{ item.quastion }}
+            {{ item.question }}
           </p>
           <p
-            class="answer message float-right py-1 px-3 bg-green-300 ml-16 rounded-t-2xl rounded-bl-2xl w-fit mb-2 h-fit"
+            class="answer message float-left py-1 px-3 bg-green-300 rounded-t-2xl rounded-br-2xl w-fit mb-4 h-fit"
           >
             <span
               *ngIf="!item.answer"
@@ -49,13 +49,15 @@
         </div>
       </div>
 
-      <div class="absolute -bottom-1 right-2 left-0 mt-4 z-50 shadow-md">
+      <div
+        class="absolute -bottom-1 right-2 left-0 mt-4 z-50 shadow-md px-2 pb-2"
+      >
         <form [formGroup]="questionFormGroup">
           <div class="relative">
             <textarea
               name="input"
               formControlName="question"
-              class="overflow-x-hidden w-full bg-gray-300 pl-3 outline-none focus:outline-blue-400 pr-8"
+              class="overflow-x-hidden w-full bg-gray-500 pl-3 outline-none focus:outline-blue-400 pr-8 rounded-md h-12"
             ></textarea>
             <button
               class="absolute z-10 right-1 top-2 cursor-pointer"

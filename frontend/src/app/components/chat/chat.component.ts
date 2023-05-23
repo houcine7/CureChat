@@ -4,7 +4,7 @@ import { ChatService } from 'src/app/services/chat.service';
 
 type ChatMessage = {
   id: number;
-  quastion: string;
+  question: string;
   date: Date;
   answer?: string;
 };
@@ -35,8 +35,9 @@ export class ChatComponent implements OnInit {
     this.chatMessages = [
       {
         id: 1,
-        quastion: 'I have a headache what should I do as a treatement ',
+        question: ' what questions you can answer? ',
         date: new Date(),
+        answer: 'I only answer health related questions',
       },
     ];
   }
@@ -59,7 +60,7 @@ export class ChatComponent implements OnInit {
     if (qst != null && qst != undefined && qst.length >= 10) {
       this.chatMessages.push({
         id: idMsg,
-        quastion: qst,
+        question: qst,
         date: new Date(),
       });
       this.questionFormGroup.setValue({ question: null });

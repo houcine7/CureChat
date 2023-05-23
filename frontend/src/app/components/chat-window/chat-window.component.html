@@ -1,0 +1,102 @@
+<app-nav></app-nav>
+
+<section class="grid grid-flow-col grid-cols-6 w-full h-h-chat-full">
+  <div class="bg-gray-600 h-full w-full col-span-1 mx-auto">
+    <div>
+      <div class="flex flex-col justify-center items-center py-3 px-2">
+        <p class="mb-2">Hello <span class="font-bold">User77</span></p>
+
+        <button
+          class="w-full py-2 border-2 border-blue-400 rounded-lg font-normal justify-around flex mb-3 transition ease-in-out duration-700 hover:rounded-none"
+        >
+          <span> Create new chat</span>
+          <i class="bi bi-plus-circle text-md"></i>
+        </button>
+      </div>
+      <div class="history-section px-1">
+        <p class="mb-2 px-3">Your History</p>
+
+        <div class="historyList flex flex-col gap-2">
+          <div
+            class="history-item relative rounded p-2 flex justify-between cursor-pointer transition duration-500 hover:bg-gray-400"
+          >
+            <i class="bi bi-clock-history"></i>
+            <p>Headache causes</p>
+            <div class="flex gap-1">
+              <i class="bi bi-trash-fill"></i>
+              <i class="bi bi-pencil-fill"></i>
+            </div>
+          </div>
+          <!--  -->
+          <div
+            class="history-item relative rounded-md p-2 flex justify-between cursor-pointer transition duration-500 hover:bg-gray-400"
+          >
+            <i class="bi bi-clock-history"></i>
+            <p>Headache causes</p>
+            <div class="flex gap-1">
+              <i class="bi bi-trash-fill"></i>
+              <i class="bi bi-pencil-fill"></i>
+            </div>
+          </div>
+          <!-- 
+           -->
+          <div
+            class="history-item relative rounded p-2 flex justify-between cursor-pointer transition duration-500 hover:bg-gray-400"
+          >
+            <i class="bi bi-clock-history"></i>
+            <p>Headache causes</p>
+            <div class="flex gap-1">
+              <i class="bi bi-trash-fill"></i>
+              <i class="bi bi-pencil-fill"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="current-chat bg-gray-700 w-full h-full col-span-5 px-10 py-10 relative overflow-hidden"
+  >
+    <div class="">
+      <div class="flex gap-1 items-end mb-2">
+        <p
+          class="question py-2 px-3 bg-blue-300 float-right rounded-t-2xl rounded-bl-2xl w-fit mb-6 h-fit"
+        >
+          I have a question for youca you pleas tell me Lorem ipsum dolor sit
+          amet consectetur adipisicing elit. Aliquam consequatur veniam,
+          exercitationem veritatis eum hic accusantium rem deleniti dolor
+          quisquam itaque sequi repellat voluptatum rerum ver
+        </p>
+        <img src="assets/user.png" alt="" class="w-9" />
+      </div>
+
+      <span class="block w-full mx-8 border border-gray-400 mb-4"></span>
+
+      <!--  -->
+
+      <div class="px-3">
+        <p
+          class="px-3 answer message float-left py-1 bg-green-300 rounded-t-2xl rounded-br-2xl w-fit mb-4 h-fit"
+        >
+          this the provided answer by the gpt-3 API Lorem ipsum dolor sit amet
+          consectetur adipisicing elit. Maxime vero neque quasi ipsa dicta
+          explicabo iure deleniti, voluptatibus ullam natus amet quisquam esse
+          minus officia, expedita ut eligendi omnis provident.
+        </p>
+      </div>
+    </div>
+
+    <div class="absolute bottom-12 right-32 left-32">
+      <input
+        type="text"
+        name=""
+        id=""
+        class="w-full h-10 pr-24 pl-4 outline-blue-400 rounded-md"
+      />
+
+      <button class="rounded-md bg-green-400 py-1 px-6 absolute right-3 top-1">
+        Ask
+      </button>
+    </div>
+  </div>
+</section>

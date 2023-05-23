@@ -7,6 +7,8 @@ import { NavComponent } from './components/nav/nav.component';
 import { HeroComponent } from './components/hero/hero.component';
 import { HeroCardsComponent } from './components/hero-cards/hero-cards.component';
 import { ChatComponent } from './components/chat/chat.component';
+import { CardPresntationComponent } from './components/card-presntation/card-presntation.component';
+import { ChatWindowComponent } from './components/chat-window/chat-window.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +17,8 @@ import { ChatComponent } from './components/chat/chat.component';
     HeroComponent,
     HeroCardsComponent,
     ChatComponent,
+    CardPresntationComponent,
+    ChatWindowComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule],
   providers: [],

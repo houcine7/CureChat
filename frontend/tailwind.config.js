@@ -5,6 +5,7 @@ module.exports = {
     extend: {
       height: {
         "h-0.5": "2px",
+        "h-chat-full": "92vh",
       },
     },
   },
