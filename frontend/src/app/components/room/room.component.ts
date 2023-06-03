@@ -2,21 +2,31 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { WebSocketService } from '../../services/web-socket.service';
 import { PeerService } from '../../services/peer.service';
+import { RoomService } from 'src/app/services/room.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-room',
   templateUrl: './room.component.html',
-  styleUrls: ['./room.component.css'],
+  styleUrls: [
+    './room.component.css',
+    '../menu-bottom/menu-bottom.component.css',
+    '../video-player/video-player.component.css',
+  ],
 })
 export class RoomComponent implements OnInit {
   roomName: string | null;
-  currentStream: any;
+  currentStream!: MediaStream;
   listUser: Array<any> = new Array(2);
+  audioEnabled: boolean = true;
+  videoEnabled: boolean = true;
 
   constructor(
     private route: ActivatedRoute,
     private webSocketService: WebSocketService,
-    private peerService: PeerService
+    private peerService: PeerService,
+    private roomService: RoomService,
+    private router: Router
   ) {
     this.roomName = route.snapshot.paramMap.get('id');
   }
@@ -28,6 +38,10 @@ export class RoomComponent implements OnInit {
     this.initSocket();
   }
 
+  ngOnDestroy() {
+    this.stopStream();
+  }
+
   initPeer = () => {
     const { peer } = this.peerService;
     peer.on('open', (id: string) => {
@@ -35,7 +49,6 @@ export class RoomComponent implements OnInit {
         idPeer: id,
         roomName: this.roomName,
       };
-
       this.webSocketService.joinRoom(body);
     });
 
@@ -69,7 +82,7 @@ export class RoomComponent implements OnInit {
     if (navigator && navigator.mediaDevices) {
       navigator.mediaDevices
         .getUserMedia({
-          audio: false,
+          audio: true,
           video: true,
         })
         .then((stream) => {
@@ -83,6 +96,7 @@ export class RoomComponent implements OnInit {
       navigator.mediaDevices
         .getDisplayMedia({
           video: true,
+          audio: true,
         })
         .then((stream) => {
           this.currentStream = stream;
@@ -98,6 +112,7 @@ export class RoomComponent implements OnInit {
 
   addVideoUser = (stream: any) => {
     if (this.listUser.length < 3) this.listUser.push(stream);
+    console.log(this.listUser);
     const unique = new Set(this.listUser);
     this.listUser = [...unique];
   };
@@ -110,120 +125,53 @@ export class RoomComponent implements OnInit {
       });
     }
   };
+
+  toggleVideoStream = () => {
+    const videoTrack = this.currentStream
+      .getTracks()
+      .find((track) => track.kind === 'video');
+    if (videoTrack?.enabled) {
+      videoTrack.enabled = false;
+      this.videoEnabled = false;
+    } else {
+      videoTrack!.enabled = true;
+      this.videoEnabled = true;
+    }
+  };
+
+  toggleAudioStream = () => {
+    const audioTrack = this.currentStream
+      .getTracks()
+      .find((track) => track.kind === 'audio');
+    if (audioTrack?.enabled) {
+      audioTrack.enabled = false;
+      this.audioEnabled = false;
+    } else {
+      audioTrack!.enabled = true;
+      this.audioEnabled = true;
+    }
+  };
+
+  copyMeetingLink = () => {
+    let url = document.location.href;
+    navigator.clipboard.writeText(url).then(
+      function () {
+        window.alert('Link Copied!');
+      },
+      function () {
+        window.alert('Copy error');
+      }
+    );
+  };
+
+  stopStream() {
+    if (this.currentStream) {
+      this.currentStream.getTracks().forEach((track) => {
+        track.stop();
+      });
+    }
+    setTimeout(() => {
+      this.router.navigate(['/']); // Replace 'home page' with the actual route for your home page
+    }, 1500);
+  }
 }
-
-// import { Component, OnInit } from '@angular/core';
-// import { ActivatedRoute } from '@angular/router';
-// import { WebSocketService } from '../../services/web-socket.service';
-// import { PeerService } from '../../services/peer.service';
-// import { io, Socket } from 'socket.io-client';
-
-// @Component({
-//   selector: 'app-room',
-//   templateUrl: './room.component.html',
-//   styleUrls: ['./room.component.css'],
-// })
-// export class RoomComponent implements OnInit {
-//   roomName!: string;
-//   currentStream!: any;
-//   listUser: Array<any> = [];
-
-//   constructor(
-//     private route: ActivatedRoute,
-//     private webSocketService: WebSocketService,
-//     private peerService: PeerService
-//   ) {
-//     this.roomName = route.snapshot.paramMap.get('id')!;
-//   }
-
-//   ngOnInit(): void {
-//     this.checkMediaDevices();
-//     this.initPeer();
-//     this.initSocket();
-//     console.log('hello');
-//     // this.webSocketService.receiver.subscribe((res) => console.log(res));
-//   }
-
-//   initPeer = () => {
-//     const { peer } = this.peerService;
-//     peer.on('open', (id: any) => {
-//       const body = {
-//         idPeer: id,
-//         roomName: this.roomName,
-//       };
-
-//       this.webSocketService.joinRoom(body);
-//     });
-
-//     peer.on(
-//       'call',
-//       (callEnter: any) => {
-//         console.log('calling ...📞');
-//         callEnter.answer(this.currentStream);
-//         console.log(this.currentStream);
-//         callEnter.on('stream', (streamRemote: any) => {
-//           this.addVideoUser(streamRemote);
-//         });
-//       },
-//       (err: Error) => {
-//         console.log('*** ERROR *** Peer call ', err);
-//       }
-//     );
-//   };
-
-//   initSocket = () => {
-//     this.webSocketService.cbEvent.subscribe((res) => {
-//       console.log(res);
-//       if (res.name === 'new-user') {
-//         const { idPeer } = res.data;
-//         this.sendCall(idPeer, this.currentStream);
-//       }
-//     });
-//   };
-
-//   checkMediaDevices = () => {
-//     if (navigator && navigator.mediaDevices) {
-//       navigator.mediaDevices
-//         .getUserMedia({
-//           audio: false,
-//           video: true,
-//         })
-//         .then((stream) => {
-//           this.currentStream = stream;
-//           this.addVideoUser(stream);
-//         })
-//         .catch(() => {
-//           console.log('*** ERROR *** Not permissions');
-//         });
-//     } else if (navigator.mediaDevices.getDisplayMedia) {
-//       navigator.mediaDevices
-//         .getDisplayMedia({
-//           video: true,
-//         })
-//         .then((stream) => {
-//           this.currentStream = stream;
-//           this.addVideoUser(stream);
-//         })
-//         .catch(() => {
-//           console.log('*** ERROR *** Not permissions');
-//         });
-//     } else {
-//       console.log('*** ERROR *** Not media devices');
-//     }
-//   };
-
-//   addVideoUser = (stream: any) => {
-//     this.listUser.push(stream);
-//     const unique = new Set(this.listUser);
-//     this.listUser = [...unique];
-//   };
-
-//   sendCall = (idPeer: string, stream: any) => {
-//     const newUserCall = this.peerService.peer.call(idPeer, stream);
-//     if (!!newUserCall) {
-//       newUserCall.on('stream', (userStream: any) => {
-//         this.addVideoUser(userStream);
-//       });
-//     }
-//   };
-// }
