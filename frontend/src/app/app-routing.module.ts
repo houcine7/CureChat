@@ -5,6 +5,8 @@ import { NavComponent } from './components/nav/nav.component';
 import { HeroComponent } from './components/hero/hero.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { ChatWindowComponent } from './components/chat-window/chat-window.component';
+import { MeetingHomeComponent } from './components/meeting-home/meeting-home.component';
+import { RoomComponent } from './components/room/room.component';
 
 const routes: Routes = [
   {
@@ -20,6 +22,14 @@ const routes: Routes = [
   {
     path: 'user/messages',
     component: ChatWindowComponent,
+  },
+  {
+    path: 'meeting',
+    component: MeetingHomeComponent,
+  },
+  {
+    path: 'meeting/:id',
+    component: RoomComponent,
   },
 ];
 
