@@ -9,11 +9,12 @@ import { WebSocketService } from './services/web-socket.service';
 export class AppComponent {
   title = 'frontend';
   constructor(private socketService: WebSocketService) {}
-  ngOnInit() {
-    // this.socketService.setupSocketConnection();
-  }
 
-  ngOnDestroy() {
-    // this.socketService.disconnect();
-  }
+  // ngOnInit() {
+  //   this.socketService.setupSocketConnection();
+  // }
+
+  // ngOnDestroy() {
+  //   this.socketService.disconnect();
+  // }
 }
