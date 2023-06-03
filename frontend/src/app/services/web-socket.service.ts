@@ -1,57 +1,70 @@
 import { EventEmitter, Injectable } from '@angular/core';
-// import { Socket } from 'ngx-socket-io';
-import { Socket, io } from 'socket.io-client';
+import { Socket } from 'ngx-socket-io';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WebSocketService {
-  socket!: Socket;
-  constructor() {}
+  events = ['new-user', 'bye-user'];
+  cbEvent: EventEmitter<any> = new EventEmitter<any>();
 
-  setupSocketConnection() {
-    this.socket = io('http://localhost:3000');
-    this.socket.emit('m', 'Hello there from Angular.');
+  constructor(private socket: Socket) {
+    this.socket.emit('hello', 'hello');
+    this.listener();
   }
 
-  disconnect() {
-    console.log('TRYING Disconnecting...');
+  listener = () => {
+    this.events.forEach((evenName) => {
+      this.socket.on(evenName, (data: any) =>
+        this.cbEvent.emit({
+          name: evenName,
+          data,
+        })
+      );
+    });
+  };
 
-    if (this.socket) {
-      console.log('Disconnecting...');
-
-      this.socket.disconnect();
-    }
-  }
-
-  // events = ['new-user', 'bye-user'];
-  // cbEvent: EventEmitter<any> = new EventEmitter<any>();
-  // receiver = this.socket.fromEvent<string>('hello');
-  // constructor(private socket: Socket) {
-  //   this.socket.emit('hello', { msg: 'hello' });
-  //   console.log(this.socket);
-  // this.listener();
-  // }
-  // listener = () => {
-  //   this.events.forEach((evenName) => {
-  //     this.socket.on(evenName, (data: any) =>
-  //       this.cbEvent.emit({
-  //         name: evenName,
-  //         data,
-  //       })
-  //     );
-  //   });
-  // };
-  // joinRoom = (data: any) => {
-  //   console.log(this.socket);
-  //   this.socket.emit('join', data);
-  // };
-  // // emit event
-  // hello() {
-  //   this.socket.emit('hello');
-  // }
-  // // listen event
-  // onHello() {
-  //   return this.socket.fromEvent('hello');
-  // }
+  joinRoom = (data: any) => {
+    this.socket.emit('join', data);
+  };
 }
+
+// import { Injectable } from '@angular/core';
+// import { io, Socket } from 'socket.io-client';
+
+// @Injectable({
+//   providedIn: 'root',
+// })
+// export class WebSocketService {
+//   socket!: Socket;
+
+//   constructor() {}
+
+//   setupSocketConnection() {
+//     this.socket = io('http://localhost:3000');
+//     this.socket.emit('my message', 'Hello there from Angular.');
+//     this.socket.on('my broadcast', (data: string) => {
+//       console.log(data);
+//     });
+//     this.socket.on('new-user', (data: any) => {
+//       console.log(data);
+//     });
+//     this.socket.on('bye-user', (data: any) => {
+//       console.log(data);
+//     });
+
+//     this.socket.on('join', (data: any) => {
+//       console.log(data);
+//     });
+//   }
+
+//   disconnect() {
+//     if (this.socket) {
+//       this.socket.disconnect();
+//     }
+//   }
+
+//   joinRoom = (data: any) => {
+//     this.socket.emit('join', data);
+//   };
+// }
