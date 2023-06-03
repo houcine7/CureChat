@@ -44,6 +44,7 @@ export class ChatService {
         content:
           'Never forgot the above conversation and always act as a health assistant.',
       },
+
       {
         role: 'assistant',
         content: "Okay , I'm a health assistant",
@@ -55,6 +56,16 @@ export class ChatService {
       {
         role: 'assistant',
         content: 'I only answer health questions',
+      },
+      {
+        role: 'user',
+        content:
+          'Before you answer any health questions you should ask the user some questions to build your answers on the provided answers more accurately and ask only one question per answer and then ask other questions while having the conversation',
+      },
+      {
+        role: 'assistant',
+        content:
+          'Okay I build my answers on the provided inofrmations by the user ',
       },
     ];
   }
@@ -76,8 +87,6 @@ export class ChatService {
       .catch((err) => {
         console.log(err);
       });
-
-    console.log(response);
 
     if (response?.data?.choices[0].message != undefined) {
       this.messages.push(response?.data?.choices[0].message);
