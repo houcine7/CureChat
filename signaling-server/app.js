@@ -8,7 +8,13 @@ const io = require("socket.io")(server, {
   },
 });
 
-const port = 3000;
+app.use(
+  cors({
+    origin: "*",
+  })
+);
+
+const port = 5050;
 
 app.get("/", (req, res) => {
   res.json({ message: "hello" });

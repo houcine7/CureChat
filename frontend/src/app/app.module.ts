@@ -18,7 +18,7 @@ import { PeerService } from './services/peer.service';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 
 const config: SocketIoConfig = {
-  url: 'http://localhost:3000',
+  url: 'http://localhost:5050',
   options: {},
 };
 

@@ -11,7 +11,7 @@ export class MeetingHomeComponent {
   constructor(private router: Router) {}
 
   ngOnInit(): void {
-    fetch('http://localhost:3000').then((res) => console.log(res));
+    fetch('http://localhost:5050').then((res) => console.log(res));
   }
 
   goToRoom = () => {

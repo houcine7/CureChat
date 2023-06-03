@@ -10,10 +10,10 @@ export class AppComponent {
   title = 'frontend';
   constructor(private socketService: WebSocketService) {}
   ngOnInit() {
-    this.socketService.setupSocketConnection();
+    // this.socketService.setupSocketConnection();
   }
 
   ngOnDestroy() {
-    this.socketService.disconnect();
+    // this.socketService.disconnect();
   }
 }
