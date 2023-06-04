@@ -43,7 +43,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String jwt;
         String id;
 
-        if(authorization==null || authorization.split(" ")[0]=="Bearer"){
+        if(authorization==null || !authorization.split(" ")[0].equals("Bearer")){
             System.out.println("..... no auth header");
 
             filterChain.doFilter(request,response);
@@ -56,6 +56,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         System.out.println("id") ;
 
         if( id!=null && SecurityContextHolder.getContext().getAuthentication()==null){
+
             UserDetails userDetails =userDetailsImpService.loadUserById(id) ;
 
             UsernamePasswordAuthenticationToken authToken =new UsernamePasswordAuthenticationToken(
