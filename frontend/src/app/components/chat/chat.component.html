@@ -27,7 +27,7 @@
     </p>
 
     <div class="group">
-      <div class="h-96 overflow-y-scroll my-4 px-2 pb-12">
+      <div class="h-96 overflow-y-scroll my-4 px-2 pb-12 mb-4">
         <div *ngFor="let item of chatMessages">
           <p
             class="message py-1 px-3 bg-blue-300 float-right rounded-t-2xl rounded-bl-2xl w-fit mb-4 h-fit"
@@ -50,11 +50,12 @@
       </div>
 
       <div
-        class="absolute -bottom-1 right-2 left-0 mt-4 z-50 shadow-md px-2 pb-2"
+        class="absolute bottom-0 right-2 left-0 mt-4 z-50 shadow-md px-2 pb-1"
       >
         <form [formGroup]="questionFormGroup">
           <div class="relative">
             <textarea
+              (keyup.enter)="handelSubmit()"
               name="input"
               formControlName="question"
               class="overflow-x-hidden w-full bg-gray-500 pl-3 outline-none focus:outline-blue-400 pr-8 rounded-md h-12"
@@ -62,6 +63,7 @@
             <button
               class="absolute z-10 right-1 top-2 cursor-pointer"
               (click)="handelSubmit()"
+              type="submit"
             >
               <i class="bi-send text-3xl font-bold"></i>
             </button>

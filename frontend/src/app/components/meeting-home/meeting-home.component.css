@@ -1,5 +1,7 @@
 :host {
   display: block;
+  background-color: #37a5ff38;
+  height: 100vh;
 }
 
 .header {
@@ -7,7 +9,7 @@
   justify-content: space-between;
   align-content: center;
   align-items: center;
-  background-color: #f2f2f5;
+  background-color: #9dd3ffe5;
 }
 
 .list-menu {
@@ -24,7 +26,7 @@
   }
 
   .uil {
-    color: #575764;
+    color: #004985;
     font-size: 1.5rem;
   }
 }
@@ -54,12 +56,12 @@
   justify-content: center;
   min-height: 20rem;
   padding: 2rem;
+}
 
-  .label-title {
-    text-align: center;
-    padding: 0.5rem;
-    font-weight: 500;
-  }
+.wrapper-body .label-title {
+  text-align: center;
+  padding: 0.5rem;
+  font-weight: 500;
 }
 
 .wrapper-body .block .btn-block {
@@ -68,7 +70,7 @@
   justify-content: center;
   align-items: center;
   align-content: center;
-  background-color: tomato;
+  background-color: rgb(48, 201, 86);
   border-radius: 0.5rem;
   box-shadow: 0 0.5px 10px rgba(0, 0, 0, 0.05), 0 4px 80px rgba(0, 0, 0, 0.1);
   border: solid 3px rgb(255 255 255 / 59%);
