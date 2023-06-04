@@ -17,8 +17,8 @@ import java.util.List;
 public class ConversationEntity {
     @Id
     private String id;
-    @Indexed(unique = true)
     private String name;
     private String userId;
     private Date startDate;
+    private List<MessageEntity> messages;
 }
