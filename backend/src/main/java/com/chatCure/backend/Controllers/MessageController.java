@@ -50,9 +50,10 @@ public class MessageController {
         Optional<MessageEntity> existingMessage = messageRepository.findById(id);
         if (existingMessage.isPresent()) {
             MessageEntity updatedMessage = existingMessage.get();
-            updatedMessage.setQuestion(message.getQuestion());
-            updatedMessage.setAnswer(message.getAnswer());
-            updatedMessage.setDate(message.getDate());
+            if(message.getQuestion()!=null) updatedMessage.setQuestion(message.getQuestion());
+            if (message.getAnswer()!=null) updatedMessage.setAnswer(message.getAnswer());
+            if (message.getDate()!=null) updatedMessage.setDate(message.getDate());
+            if (message.getConversationId()!=null) updatedMessage.setConversationId(message.getConversationId());
 
             MessageEntity savedMessage = messageRepository.save(updatedMessage);
             return ResponseEntity.ok(savedMessage);

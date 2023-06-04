@@ -1,6 +1,7 @@
 package com.chatCure.backend.Controllers;
 
 import com.chatCure.backend.Entities.ConversationEntity;
+import com.chatCure.backend.Entities.MessageEntity;
 import com.chatCure.backend.Repositories.ConversationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -45,16 +46,21 @@ public class ConversationController {
 
     // Update an existing conversation
     @PutMapping("/{id}")
-    public ResponseEntity<ConversationEntity> updateConversation(
-            @PathVariable("id") String id, @RequestBody ConversationEntity conversation) {
+    public ResponseEntity<ConversationEntity> updateConversation(@PathVariable("id") String id, @RequestBody ConversationEntity conversation) {
         Optional<ConversationEntity> existingConversation = conversationRepository.findById(id);
         if (existingConversation.isPresent()) {
-            ConversationEntity updatedConversation = existingConversation.get();
-            updatedConversation.setName(conversation.getName());
-            updatedConversation.setStartDate(conversation.getStartDate());
-
-            ConversationEntity savedConversation = conversationRepository.save(updatedConversation);
-            return ResponseEntity.ok(savedConversation);
+            List<MessageEntity> existingMessages = existingConversation.get().getMessages();
+            if (existingMessages != null) {
+                List<MessageEntity> newMessages = conversation.getMessages();
+                if (newMessages != null) {
+                    existingMessages.addAll(newMessages);
+                }
+            }
+            ConversationEntity existingConversationEntity = existingConversation.get();
+            if (conversation.getName()!=null) existingConversationEntity.setName(conversation.getName());
+            if(conversation.getUserId()!=null) existingConversationEntity.setUserId(conversation.getUserId());
+            ConversationEntity updatedConversation = conversationRepository.save(existingConversationEntity);
+            return ResponseEntity.ok(updatedConversation);
         } else {
             return ResponseEntity.notFound().build();
         }
