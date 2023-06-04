@@ -12,16 +12,13 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/conversations")
+@CrossOrigin(origins = "*")
 public class ConversationController {
 
-    private final ConversationRepository conversationRepository;
-
     @Autowired
-    public ConversationController(ConversationRepository conversationRepository) {
-        this.conversationRepository = conversationRepository;
-    }
+    private ConversationRepository conversationRepository;
+
 
     // Get all conversations
     @GetMapping
@@ -41,7 +38,12 @@ public class ConversationController {
     @PostMapping
     public ResponseEntity<ConversationEntity> createConversation(@RequestBody ConversationEntity conversation) {
         ConversationEntity savedConversation = conversationRepository.save(conversation);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedConversation);
+           return ResponseEntity.status(HttpStatus.CREATED).body(savedConversation);
+    }
+
+    @PostMapping("/1")
+    public void test() {
+        System.out.println("test succeeded");
     }
 
     // Update an existing conversation
