@@ -7,6 +7,9 @@ import { ChatComponent } from './components/chat/chat.component';
 import { ChatWindowComponent } from './components/chat-window/chat-window.component';
 import { MeetingHomeComponent } from './components/meeting-home/meeting-home.component';
 import { RoomComponent } from './components/room/room.component';
+import { LoginComponent } from './components/authentication/login/login.component';
+import { RegisterComponent } from './components/authentication/register/register.component';
+import { AuthenticationComponent } from './components/authentication/authentication.component';
 
 const routes: Routes = [
   {
@@ -30,6 +33,20 @@ const routes: Routes = [
   {
     path: 'meeting/:id',
     component: RoomComponent,
+  },
+  {
+    path: 'auth',
+    component: AuthenticationComponent,
+    children: [
+      {
+        path: 'login',
+        component: LoginComponent,
+      },
+      {
+        path: 'register',
+        component: RegisterComponent,
+      },
+    ],
   },
 ];
 

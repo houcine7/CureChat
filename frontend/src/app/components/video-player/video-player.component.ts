@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { VideoMeetingService } from 'src/app/services/video-meeting.service';
 
 @Component({
   selector: 'app-video-player',

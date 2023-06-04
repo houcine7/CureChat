@@ -16,9 +16,17 @@ import { MenuBottomComponent } from './components/menu-bottom/menu-bottom.compon
 import { WebSocketService } from './services/web-socket.service';
 import { PeerService } from './services/peer.service';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
+import { LoginComponent } from './components/authentication/login/login.component';
+import { RegisterComponent } from './components/authentication/register/register.component';
+import { AuthenticationComponent } from './components/authentication/authentication.component';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+import { environment } from './environments/environment';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { HttpClientModule } from '@angular/common/http';
 
 const config: SocketIoConfig = {
-  url: 'http://localhost:5050',
+  url: 'http://localhost:3000',
   options: {},
 };
 
@@ -35,6 +43,9 @@ const config: SocketIoConfig = {
     RoomComponent,
     VideoPlayerComponent,
     MenuBottomComponent,
+    LoginComponent,
+    RegisterComponent,
+    AuthenticationComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,8 +53,11 @@ const config: SocketIoConfig = {
     FormsModule,
     ReactiveFormsModule,
     SocketIoModule.forRoot(config),
+    HttpClientModule,
+    AngularFireDatabaseModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
   ],
-  providers: [WebSocketService, PeerService],
+  providers: [WebSocketService, PeerService, AngularFireStorage],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

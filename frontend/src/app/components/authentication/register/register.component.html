@@ -1,0 +1,161 @@
+<div
+  class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0 text-black"
+>
+  <a
+    routerLink="/"
+    class="flex items-center mb-6 text-2xl font-semibold text-gray-900"
+  >
+    <img class="w-8 h-8 mr-2" src="assets/chat.png" alt="logo" />
+    CureChat
+  </a>
+  <div
+    class="w-full rounded-lg dark:border md:mt-0 sm:max-w-md xl:p-0 bg-gray-600 dark:border-gray-200"
+  >
+    <div class="py-6 px-4 space-y-4">
+      <h1
+        class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
+      >
+        Create your account
+      </h1>
+      <form
+        class="space-y-4 md:space-y-6"
+        [formGroup]="registerFormGroup"
+        (ngSubmit)="handelClick()"
+      >
+        <div>
+          <label
+            for="username"
+            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >Your username</label
+          >
+          <input
+            type="text"
+            formControlName="username"
+            id="username"
+            class="bg-gray-50 outline-none border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="username"
+            required=""
+          />
+        </div>
+
+        <div class="grid grid-flow-row grid-cols-2 gap-1">
+          <div class="col-span-1">
+            <label
+              for="password"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Password</label
+            >
+            <input
+              type="password"
+              formControlName="password"
+              id="password"
+              placeholder="••••••••"
+              class="bg-gray-50 outline-none border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              required=""
+            />
+          </div>
+
+          <div class="col-span-1">
+            <label
+              for="confirmPassword"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Confirm Password</label
+            >
+            <input
+              type="password"
+              formControlName="confirmPassword"
+              id="confirmPassword"
+              placeholder="••••••••"
+              class="bg-gray-50 outline-none border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              required=""
+            />
+          </div>
+        </div>
+
+        <div class="grid grid-flow-row grid-cols-2 gap-1">
+          <div class="col-span-1">
+            <label
+              for="firstName"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >First name</label
+            >
+            <input
+              type="text"
+              formControlName="firstName"
+              id="firstName"
+              placeholder="your first name"
+              class="bg-gray-50 outline-none border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              required=""
+            />
+          </div>
+
+          <div class="col-span-1">
+            <label
+              for="lastName"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Last name</label
+            >
+            <input
+              type="text"
+              formControlName="lastName"
+              id="lastName"
+              placeholder="Your last name"
+              class="bg-gray-50 outline-none border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              required=""
+            />
+          </div>
+        </div>
+
+        <div>
+          <label
+            for="avatar"
+            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >Avatar</label
+          >
+          <input
+            [type]="isAvatarAdded ? 'hidden' : 'file'"
+            formControlName="avatar"
+            (input)="onFileChange($event)"
+            id="avatar"
+            placeholder="your avatar"
+            class="bg-gray-50 cursor-pointer outline-none border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            required=""
+            accept="image/png, image/gif, image/jpeg"
+          />
+          <p
+            *ngIf="progressValue == 100"
+            class="bg-gray-50 border text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-blue-500"
+          >
+            {{ registerFormGroup.value.avatar }}
+          </p>
+          <div
+            class="w-full bg-gray-200 rounded-full dark:bg-gray-700 mt-2"
+            *ngIf="isAvatarAdded"
+          >
+            <div
+              class="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
+              [style.width.%]="progressValue"
+            >
+              {{ progressValue }}%
+            </div>
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="w-full text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition duration-500 hover:bg-blue-500"
+        >
+          Sign in
+        </button>
+        <p class="text-xs font-light text-gray-300">
+          You Already have an account?
+          <a
+            routerLink="/auth/login"
+            class="font-medium text-sm text-primary-600 hover:underline"
+            >Sign in</a
+          >
+        </p>
+      </form>
+    </div>
+  </div>
+</div>

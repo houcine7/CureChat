@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { VideoMeetingService } from 'src/app/services/video-meeting.service';
 
 @Component({
   selector: 'app-menu-bottom',
@@ -13,7 +15,21 @@ export class MenuBottomComponent implements OnInit {
     { name: 'Share', icon: 'uil uil-share' },
   ];
 
-  constructor() {}
+  cameraEnabled: Observable<boolean>;
+  state: boolean = false;
 
-  ngOnInit(): void {}
+  constructor(private videoMeeting: VideoMeetingService) {
+    this.cameraEnabled = this.videoMeeting.cameraEnabled$;
+  }
+
+  ngOnInit(): void {
+    console.log('herer i am');
+  }
+
+  handelClickCamera(): void {
+    this.videoMeeting.setCameraEnabled(this.state);
+    this.state = !this.state;
+    this.cameraEnabled = this.videoMeeting.cameraEnabled$;
+    console.log('yes');
+  }
 }

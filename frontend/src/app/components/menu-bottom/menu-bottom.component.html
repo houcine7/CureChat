@@ -2,8 +2,13 @@
   <ul class="list-menu">
     <li class="btn-menu" *ngFor="let btn of menu">
       <button>
-        <span><i class="{{btn.icon}}"></i></span>
-        <span>{{btn.name}}</span>
+        <span
+          ><i
+            class="{{ btn.icon }}"
+            (click)="btn.name == 'Camera' && handelClickCamera()"
+          ></i
+        ></span>
+        <span>{{ btn.name }}</span>
       </button>
     </li>
   </ul>
