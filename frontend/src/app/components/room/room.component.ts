@@ -19,6 +19,8 @@ export class RoomComponent implements OnInit {
   listUser: Array<any> = new Array(2);
   audioEnabled: boolean = true;
   videoEnabled: boolean = true;
+  videoMeeting: any;
+  cameraEnabled: any;
 
   constructor(
     private route: ActivatedRoute,

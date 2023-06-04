@@ -19,36 +19,19 @@
         <div class="historyList flex flex-col gap-2">
           <div
             class="history-item relative rounded p-2 flex justify-between cursor-pointer transition duration-500 hover:bg-gray-400"
+            *ngFor="let conversation of conversations"
           >
-            <i class="bi bi-clock-history"></i>
-            <p>Headache causes</p>
-            <div class="flex gap-1">
-              <i class="bi bi-trash-fill"></i>
-              <i class="bi bi-pencil-fill"></i>
-            </div>
-          </div>
-          <!--  -->
-          <div
-            class="history-item relative rounded-md p-2 flex justify-between cursor-pointer transition duration-500 hover:bg-gray-400"
-          >
-            <i class="bi bi-clock-history"></i>
-            <p>Headache causes</p>
-            <div class="flex gap-1">
-              <i class="bi bi-trash-fill"></i>
-              <i class="bi bi-pencil-fill"></i>
-            </div>
-          </div>
-          <!-- 
-           -->
-          <div
-            class="history-item relative rounded p-2 flex justify-between cursor-pointer transition duration-500 hover:bg-gray-400"
-          >
-            <i class="bi bi-clock-history"></i>
-            <p>Headache causes</p>
-            <div class="flex gap-1">
-              <i class="bi bi-trash-fill"></i>
-              <i class="bi bi-pencil-fill"></i>
-            </div>
+            <a
+              [href]="'/user/messages?id=' + conversation.id"
+              class="flex gap-2 flex-wrap"
+            >
+              <i class="bi bi-clock-history"></i>
+              <p>{{ conversation.name }}</p>
+              <div class="flex gap-1">
+                <button><i class="bi bi-trash-fill"></i></button>
+                <button><i class="bi bi-pencil-fill"></i></button>
+              </div>
+            </a>
           </div>
         </div>
       </div>
@@ -58,89 +41,40 @@
     class="current-chat bg-gray-700 w-full h-full col-span-5 px-10 py-10 relative overflow-hidden"
   >
     <div class="h-chat-messages overflow-y-auto overflow-x-hidden messages">
-      <div class="container block">
-        <div class="flex gap-1 items-end mb-2">
-          <p
-            class="question py-2 px-3 bg-blue-300 float-right rounded-t-2xl rounded-bl-2xl w-fit mb-6 h-fit"
-          >
-            I have a question for youca you pleas tell me Lorem ipsum dolor sit
-            amet consectetur adipisicing elit. Aliquam consequatur veniam,
-            exercitationem veritatis eum hic accusantium rem deleniti dolor
-            quisquam itaque sequi repellat voluptatum rerum ver
-          </p>
-          <img src="assets/user.png" alt="" class="w-9" />
+      <div
+        class="message-container"
+        *ngFor="let message of currentConversationMessages"
+      >
+        <div class="container block flex flex-col justify-end items-end">
+          <div class="flex gap-2 justify-end items-start">
+            <p
+              class="question py-2 px-3 bg-blue-300 float-right rounded-t-2xl rounded-bl-2xl w-fit mb-6 h-fit"
+            >
+              <!-- I have a question for youca you pleas tell me Lorem ipsum dolor
+              sit amet consectetur adipisicing elit. Aliquam consequatur veniam,
+              exercitationem veritatis eum hic accusantium rem deleniti dolor
+              quisquam itaque sequi repellat voluptatum rerum ver -->
+              {{ message.question }}
+            </p>
+            <img src="assets/user.png" alt="" class="w-9" />
+          </div>
+
+          <!--  -->
+
+          <div class="px-3 pr-8 flex">
+            <p
+              class="px-3 answer message float-left py-1 bg-blue-200 rounded-t-2xl rounded-br-2xl w-fit mb-4 h-fit ml-auto"
+            >
+              <!-- this the provided answer by the gpt-3 API Lorem ipsum dolor sit
+              amet consectetur adipisicing elit. Maxime vero neque quasi ipsa
+              dicta explicabo iure deleniti, voluptatibus ullam natus amet
+              quisquam esse minus officia, expedita ut eligendi omnis provident. -->
+              {{ message.answer }}
+            </p>
+          </div>
         </div>
 
-        <!--  -->
-
-        <div class="px-3 pr-8 flex">
-          <p
-            class="px-3 answer message float-left py-1 bg-blue-200 rounded-t-2xl rounded-br-2xl w-fit mb-4 h-fit"
-          >
-            this the provided answer by the gpt-3 API Lorem ipsum dolor sit amet
-            consectetur adipisicing elit. Maxime vero neque quasi ipsa dicta
-            explicabo iure deleniti, voluptatibus ullam natus amet quisquam esse
-            minus officia, expedita ut eligendi omnis provident.
-          </p>
-        </div>
-      </div>
-
-      <span class="block w-full mx-8 border border-gray-400 mb-4"></span>
-
-      <div class="container block">
-        <div class="flex gap-1 items-end mb-2">
-          <p
-            class="question py-2 px-3 bg-blue-300 float-right rounded-t-2xl rounded-bl-2xl w-fit mb-6 h-fit"
-          >
-            I have a question for youca you pleas tell me Lorem ipsum dolor sit
-            amet consectetur adipisicing elit. Aliquam consequatur veniam,
-            exercitationem veritatis eum hic accusantium rem deleniti dolor
-            quisquam itaque sequi repellat voluptatum rerum ver
-          </p>
-          <img src="assets/user.png" alt="" class="w-9" />
-        </div>
-
-        <!--  -->
-
-        <div class="px-3 pr-8 flex">
-          <p
-            class="px-3 answer message float-left py-1 bg-blue-200 rounded-t-2xl rounded-br-2xl w-fit mb-4 h-fit"
-          >
-            this the provided answer by the gpt-3 API Lorem ipsum dolor sit amet
-            consectetur adipisicing elit. Maxime vero neque quasi ipsa dicta
-            explicabo iure deleniti, voluptatibus ullam natus amet quisquam esse
-            minus officia, expedita ut eligendi omnis provident.
-          </p>
-        </div>
-      </div>
-
-      <span class="block w-full mx-8 border border-gray-400 mb-4"></span>
-
-      <div class="container block">
-        <div class="flex gap-1 items-end mb-2">
-          <p
-            class="question py-2 px-3 bg-blue-300 float-right rounded-t-2xl rounded-bl-2xl w-fit mb-6 h-fit"
-          >
-            I have a question for youca you pleas tell me Lorem ipsum dolor sit
-            amet consectetur adipisicing elit. Aliquam consequatur veniam,
-            exercitationem veritatis eum hic accusantium rem deleniti dolor
-            quisquam itaque sequi repellat voluptatum rerum ver
-          </p>
-          <img src="assets/user.png" alt="" class="w-9" />
-        </div>
-
-        <!--  -->
-
-        <div class="px-3 pr-8 flex">
-          <p
-            class="px-3 answer message float-left py-1 bg-blue-200 rounded-t-2xl rounded-br-2xl w-fit mb-4 h-fit"
-          >
-            this the provided answer by the gpt-3 API Lorem ipsum dolor sit amet
-            consectetur adipisicing elit. Maxime vero neque quasi ipsa dicta
-            explicabo iure deleniti, voluptatibus ullam natus amet quisquam esse
-            minus officia, expedita ut eligendi omnis provident.
-          </p>
-        </div>
+        <span class="block w-full mx-8 border border-gray-400 mb-4"></span>
       </div>
     </div>
 
@@ -148,8 +82,9 @@
     <div class="absolute bottom-12 right-32 left-32">
       <input
         type="text"
-        name=""
-        id=""
+        name="question"
+        id="question"
+        placeholder="Do you have any health concern ..."
         class="w-full h-10 pr-24 pl-4 outline-blue-400 rounded-md"
       />
 

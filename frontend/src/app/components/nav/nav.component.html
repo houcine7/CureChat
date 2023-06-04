@@ -9,7 +9,7 @@
     <div class="">
       <ul class="sm:flex sm:gap-6">
         <li class="text-lg font-light group relative">
-          <a href="#" class="text-blue-900 font-bold"> Home </a>
+          <a routerLink="/" class="text-blue-900 font-bold"> Home </a>
 
           <span
             class="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-400 transition-all group-hover:w-full"
@@ -24,6 +24,12 @@
         </li>
         <li class="text-lg font-light group relative">
           <a href="#">Schedule</a>
+          <span
+            class="absolute -bottom-1 left-0 w-0 h-0.5 transition-all bg-blue-400 group-hover:w-full"
+          ></span>
+        </li>
+        <li class="text-lg font-light group relative">
+          <a routerLink="/user/messages">Messages</a>
           <span
             class="absolute -bottom-1 left-0 w-0 h-0.5 transition-all bg-blue-400 group-hover:w-full"
           ></span>
