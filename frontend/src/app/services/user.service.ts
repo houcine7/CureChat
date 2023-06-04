@@ -22,4 +22,22 @@ export class UserService {
       this.avatar = authenticatedUser.avatar;
     }
   }
+
+  getUsername(): string {
+    return this.username;
+  }
+
+  getName(): string {
+    return this.firstName + ' ' + this.lastName;
+  }
+
+  getToken(): string {
+    return this.token;
+  }
+
+  getAvatr(): string {
+    return this.avatar;
+  }
+
+  //
 }

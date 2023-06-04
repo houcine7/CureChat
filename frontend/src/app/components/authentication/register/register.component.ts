@@ -20,6 +20,8 @@ export class RegisterComponent implements OnInit {
   downloadedUrl: string = '';
   task!: AngularFireUploadTask;
   isAvatarAdded: boolean = false;
+  isTaskFaild: boolean = false;
+  errorMessage!: string;
 
   progressValue!: number | undefined;
 
@@ -32,12 +34,12 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.registerFormGroup = this.fb.group({
-      username: this.fb.control(null),
-      firstName: this.fb.control(null),
-      lastName: this.fb.control(null),
-      password: this.fb.control(null),
-      confirmPassword: this.fb.control(null),
-      avatar: this.fb.control(null),
+      username: this.fb.control(''),
+      firstName: this.fb.control(''),
+      lastName: this.fb.control(''),
+      password: this.fb.control(''),
+      confirmPassword: this.fb.control(''),
+      avatar: this.fb.control(''),
     });
   }
 
@@ -55,7 +57,7 @@ export class RegisterComponent implements OnInit {
         error: (err) => {
           console.log(err);
         },
-      }); 
+      });
 
       (await this.task).ref.getDownloadURL().then((url) => {
         console.log(url);
@@ -69,6 +71,7 @@ export class RegisterComponent implements OnInit {
   }
 
   handelClick = (): void => {
+    console.log(typeof this.registerFormGroup.value.username);
     const data = {
       username: this.registerFormGroup.value.username,
       password: this.registerFormGroup.value.password,
@@ -77,15 +80,44 @@ export class RegisterComponent implements OnInit {
       avatar: this.downloadedUrl,
     };
 
-    this.authService.register(data).subscribe({
-      next: (res) => {
-        console.log(res);
-        localStorage.setItem('user', JSON.stringify(res));
-        this.router.navigateByUrl('/user/messages');
-      },
-      error: (err) => {
-        console.log(err);
-      },
-    });
+    if (data.username.length <= 3) {
+      this.errorMessage = 'username must be at least 4 characters';
+      this.isTaskFaild = true;
+    } else if (
+      data.password.length < 8 ||
+      this.registerFormGroup.value.confirmPassword !== data.password
+    ) {
+      this.errorMessage =
+        'Password  must be at least 8 characters, check also password confirmation';
+      this.isTaskFaild = true;
+    } else if (data.avatar.length == 0) {
+      this.errorMessage = 'Kindely add an avatar to your account';
+      this.isTaskFaild = true;
+    } else if (
+      data.lastName.length < 3 ||
+      data.firstName.length < 3 ||
+      data.lastName.length > 10 ||
+      data.firstName.length > 10
+    ) {
+      this.errorMessage = 'pleas enter a valid first name & last name';
+      this.isTaskFaild = true;
+    } else {
+      this.authService.register(data).subscribe({
+        next: (res) => {
+          console.log(res);
+          localStorage.setItem('user', JSON.stringify(res));
+          this.router.navigateByUrl('/user/messages');
+        },
+        error: (err) => {
+          this.isTaskFaild = true;
+          this.errorMessage = err.message;
+          console.log(err);
+        },
+      });
+    }
+  };
+
+  handelHideAlert = (): void => {
+    this.isTaskFaild = false;
   };
 }

@@ -27,8 +27,6 @@ export class RoomComponent implements OnInit {
     private router: Router
   ) {
     this.roomName = route.snapshot.paramMap.get('id');
-    this.cameraEnabled = this.videoMeeting.cameraEnabled$;
-    console.log(this.cameraEnabled);
   }
 
   ngOnInit(): void {

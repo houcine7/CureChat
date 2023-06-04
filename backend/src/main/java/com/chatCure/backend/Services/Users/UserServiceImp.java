@@ -1,6 +1,8 @@
 package com.chatCure.backend.Services.Users;
 
 import com.chatCure.backend.Entities.UserEntity;
+import com.chatCure.backend.Repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -8,9 +10,16 @@ import java.util.List;
 
 @Service
 public class UserServiceImp implements UserService {
+
+    @Autowired
+    UserRepository userRepository ;
+
     @Override
     public UserEntity getUser(String id) {
-        return null;
+
+        const user
+
+
     }
 
     @Override

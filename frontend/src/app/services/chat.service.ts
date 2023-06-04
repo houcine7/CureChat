@@ -99,3 +99,61 @@ export class ChatService {
 
   saveMessage = () => {};
 }
+
+// this.http
+//   .post(
+//     'https://api.openai.com/v1/chat/completions',
+//     {
+//       model: 'gpt-3.5-turbo',
+//       messages: this.messages,
+//       temperature: 0,
+//       max_tokens: 3000,
+//       top_p: 1,
+//       frequency_penalty: 2,
+//       presence_penalty: 0,
+//       user: 'system',
+//       stream: true,
+//     },
+//     {
+//       headers: {
+//         'Content-Type': 'application/json',
+//         Authorization: `Bearer ${environment.apikey}`,
+//       },
+//       responseType: 'text',
+//     }
+//   )
+//   .subscribe({
+//     next: (data: string) => {
+//       const lines = data
+//         .split('\n')
+//         .filter((line: string) => line.trim() !== '');
+//       for (const line of lines) {
+//         const message = line.replace(/^data: /, '');
+//         console.log(message);
+
+//         if (message === '[DONE]') {
+//           // Stream finished
+//           return;
+//         }
+//         try {
+//           const parsed = JSON.parse(message);
+//           if (parsed.choices[0]?.delta?.content != undefined) {
+//             console.log(parsed.choices[0]?.delta?.content);
+//             this.currentAnswer += parsed.choices[0]?.delta?.content;
+//             console.log(this.currentAnswer);
+//           }
+//         } catch (error) {
+//           console.error(
+//             'Could not JSON parse stream message',
+//             message,
+//             error
+//           );
+//           return new Error('Could not JSON parse stream message');
+//         }
+//       }
+//       return this.currentAnswer;
+//     },
+//     error: (err) => {
+//       console.log(err);
+//     },
+//   });
