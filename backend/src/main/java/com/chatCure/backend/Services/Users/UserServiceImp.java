@@ -7,18 +7,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
 @Service
 public class UserServiceImp implements UserService {
 
     @Autowired
-    UserRepository userRepository ;
+    UserRepository userRepository;
 
     @Override
     public UserEntity getUser(String id) {
 
-        const user
-
+        return null;
 
     }
 
