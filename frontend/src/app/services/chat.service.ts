@@ -94,4 +94,8 @@ export class ChatService {
 
     return of(response?.data?.choices[0].message);
   };
+
+  getStoredMessages = () => {};
+
+  saveMessage = () => {};
 }

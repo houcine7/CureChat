@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { WebSocketService } from '../../services/web-socket.service';
 import { PeerService } from '../../services/peer.service';
-import { RoomService } from 'src/app/services/room.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -25,7 +24,6 @@ export class RoomComponent implements OnInit {
     private route: ActivatedRoute,
     private webSocketService: WebSocketService,
     private peerService: PeerService,
-    private roomService: RoomService,
     private router: Router
   ) {
     this.roomName = route.snapshot.paramMap.get('id');
