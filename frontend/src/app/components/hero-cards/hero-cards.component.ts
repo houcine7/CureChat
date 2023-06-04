@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { UserService } from 'src/app/services/user.service';
 
 type cardData = {
   img: string;
@@ -11,15 +12,16 @@ type cardData = {
   templateUrl: './hero-cards.component.html',
   styleUrls: ['./hero-cards.component.css'],
 })
-export class HeroCardsComponent {
+export class HeroCardsComponent implements OnInit {
   data: cardData[];
+  clientsNumber: number = 0;
 
-  constructor() {
+  constructor(private userService: UserService) {
     this.data = [
       {
         img: 'assets/clients.png',
         name: 'clients',
-        number: 578,
+        number: this.clientsNumber,
       },
       {
         img: 'assets/chat.png',
@@ -37,5 +39,18 @@ export class HeroCardsComponent {
         number: 700,
       },
     ];
+  }
+
+  ngOnInit(): void {
+    this.userService.getNumberUsers().subscribe({
+      next: (res) => {
+        console.log(res);
+
+        this.clientsNumber = res;
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
   }
 }

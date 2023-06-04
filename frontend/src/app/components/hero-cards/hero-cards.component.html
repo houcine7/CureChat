@@ -6,7 +6,10 @@
     >
       <img src="{{ cardItem.img }}" alt="" class="w-24" />
       <div class="mt-2 text-center">
-        <p class="font-semibold text-base">Over {{ cardItem.number }} of</p>
+        <p class="font-semibold text-base">
+          Over
+          {{ cardItem.name == "clients" ? clientsNumber : cardItem.number }} of
+        </p>
         <p class="capitalize font-bold text-blue-400">{{ cardItem.name }}</p>
       </div>
     </div>
