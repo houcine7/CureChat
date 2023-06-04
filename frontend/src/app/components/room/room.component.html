@@ -1,8 +1,51 @@
 <div class="wrapper-room">
-  <app-video-player
-    [stream]="user"
-    *ngFor="let user of listUser"
-  ></app-video-player>
+  <div *ngFor="let user of listUser">
+    <div class="wrapper-video" *ngIf="user">
+      <video [srcObject]="user" autoplay></video>
+      <div class="label-name">
+        <span [class.bg-gray-300]="!user"></span>
+      </div>
+    </div>
+  </div>
 </div>
 
-<app-menu-bottom></app-menu-bottom>
+<div class="wrapper-menu">
+  <ul class="list-menu">
+    <li class="btn-menu">
+      <button (click)="toggleAudioStream()">
+        <span
+          ><i
+            class="uil"
+            [class.uil-microphone]="audioEnabled"
+            [class.uil-microphone-slash]="!audioEnabled"
+          ></i
+        ></span>
+        <span>Mic</span>
+      </button>
+    </li>
+    <li class="btn-menu">
+      <button (click)="toggleVideoStream()">
+        <span
+          ><i
+            class="uil"
+            [class.uil-camera]="videoEnabled"
+            [class.uil-camera-slash]="!videoEnabled"
+          ></i
+        ></span>
+        <span>Camera</span>
+      </button>
+    </li>
+    <li class="btn-menu">
+      <button (click)="stopStream()">
+        <span><i class="uil uil-stop-circle"></i></span>
+        <span>End</span>
+      </button>
+    </li>
+    <li class="btn-menu">
+      <button (click)="copyMeetingLink()">
+        <span><i class="uil uil-share"></i></span>
+        <span>Share</span>
+      </button>
+    </li>
+  </ul>
+</div>

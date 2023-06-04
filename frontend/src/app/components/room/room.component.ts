@@ -2,25 +2,29 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { WebSocketService } from '../../services/web-socket.service';
 import { PeerService } from '../../services/peer.service';
-import { VideoMeetingService } from 'src/app/services/video-meeting.service';
-import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-room',
   templateUrl: './room.component.html',
-  styleUrls: ['./room.component.css'],
+  styleUrls: [
+    './room.component.css',
+    '../menu-bottom/menu-bottom.component.css',
+    '../video-player/video-player.component.css',
+  ],
 })
 export class RoomComponent implements OnInit {
   roomName: string | null;
-  currentStream: any;
-  cameraEnabled: Observable<boolean>;
+  currentStream!: MediaStream;
   listUser: Array<any> = new Array(2);
+  audioEnabled: boolean = true;
+  videoEnabled: boolean = true;
 
   constructor(
     private route: ActivatedRoute,
     private webSocketService: WebSocketService,
     private peerService: PeerService,
-    private videoMeeting: VideoMeetingService
+    private router: Router
   ) {
     this.roomName = route.snapshot.paramMap.get('id');
     this.cameraEnabled = this.videoMeeting.cameraEnabled$;
@@ -34,6 +38,10 @@ export class RoomComponent implements OnInit {
     console.log('heeere 1');
   }
 
+  ngOnDestroy() {
+    this.stopStream();
+  }
+
   initPeer = () => {
     const { peer } = this.peerService;
     peer.on('open', (id: string) => {
@@ -41,7 +49,6 @@ export class RoomComponent implements OnInit {
         idPeer: id,
         roomName: this.roomName,
       };
-
       this.webSocketService.joinRoom(body);
     });
 
@@ -75,8 +82,8 @@ export class RoomComponent implements OnInit {
     if (navigator && navigator.mediaDevices) {
       navigator.mediaDevices
         .getUserMedia({
-          audio: false,
-          video: this.cameraEnabled ? true : false,
+          audio: true,
+          video: true,
         })
         .then((stream) => {
           this.currentStream = stream;
@@ -89,6 +96,7 @@ export class RoomComponent implements OnInit {
       navigator.mediaDevices
         .getDisplayMedia({
           video: true,
+          audio: true,
         })
         .then((stream) => {
           this.currentStream = stream;
@@ -104,6 +112,7 @@ export class RoomComponent implements OnInit {
 
   addVideoUser = (stream: any) => {
     if (this.listUser.length < 3) this.listUser.push(stream);
+    console.log(this.listUser);
     const unique = new Set(this.listUser);
     this.listUser = [...unique];
   };
@@ -116,4 +125,53 @@ export class RoomComponent implements OnInit {
       });
     }
   };
+
+  toggleVideoStream = () => {
+    const videoTrack = this.currentStream
+      .getTracks()
+      .find((track) => track.kind === 'video');
+    if (videoTrack?.enabled) {
+      videoTrack.enabled = false;
+      this.videoEnabled = false;
+    } else {
+      videoTrack!.enabled = true;
+      this.videoEnabled = true;
+    }
+  };
+
+  toggleAudioStream = () => {
+    const audioTrack = this.currentStream
+      .getTracks()
+      .find((track) => track.kind === 'audio');
+    if (audioTrack?.enabled) {
+      audioTrack.enabled = false;
+      this.audioEnabled = false;
+    } else {
+      audioTrack!.enabled = true;
+      this.audioEnabled = true;
+    }
+  };
+
+  copyMeetingLink = () => {
+    let url = document.location.href;
+    navigator.clipboard.writeText(url).then(
+      function () {
+        window.alert('Link Copied!');
+      },
+      function () {
+        window.alert('Copy error');
+      }
+    );
+  };
+
+  stopStream() {
+    if (this.currentStream) {
+      this.currentStream.getTracks().forEach((track) => {
+        track.stop();
+      });
+    }
+    setTimeout(() => {
+      this.router.navigate(['/']); // Replace 'home page' with the actual route for your home page
+    }, 1500);
+  }
 }

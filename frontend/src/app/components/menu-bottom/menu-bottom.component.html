@@ -1,14 +1,27 @@
 <div class="wrapper-menu">
   <ul class="list-menu">
-    <li class="btn-menu" *ngFor="let btn of menu">
-      <button>
-        <span
-          ><i
-            class="{{ btn.icon }}"
-            (click)="btn.name == 'Camera' && handelClickCamera()"
-          ></i
-        ></span>
-        <span>{{ btn.name }}</span>
+    <li class="btn-menu">
+      <button (click)="clicker()">
+        <span><i class="uil uil-microphone"></i></span>
+        <span>Mic</span>
+      </button>
+    </li>
+    <li class="btn-menu">
+      <button (click)="clicker()">
+        <span><i class="uil uil-camera"></i></span>
+        <span>Camera</span>
+      </button>
+    </li>
+    <li class="btn-menu">
+      <button (click)="clicker()">
+        <span><i class="uil uil-stop-circle"></i></span>
+        <span>End</span>
+      </button>
+    </li>
+    <li class="btn-menu">
+      <button (click)="clicker()">
+        <span><i class="uil uil-share"></i></span>
+        <span>Share</span>
       </button>
     </li>
   </ul>

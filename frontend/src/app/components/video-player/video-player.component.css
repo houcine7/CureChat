@@ -1,8 +1,9 @@
 video {
-  width: 350px;
-  height: 250px;
+  width: 35rem;
+  height: 25rem;
   object-fit: cover;
-  border: solid 2px white;
+  border: solid 3px white;
+  border-radius: 6px;
 }
 
 .wrapper-video {

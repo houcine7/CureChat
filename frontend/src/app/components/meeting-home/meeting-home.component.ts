@@ -10,9 +10,7 @@ import { Router } from '@angular/router';
 export class MeetingHomeComponent {
   constructor(private router: Router) {}
 
-  ngOnInit(): void {
-    fetch('http://localhost:3000').then((res) => console.log(res));
-  }
+  ngOnInit(): void {}
 
   goToRoom = () => {
     this.router.navigate(['/meeting/', uuidv4()]);

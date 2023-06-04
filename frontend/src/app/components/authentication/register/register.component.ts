@@ -55,7 +55,7 @@ export class RegisterComponent implements OnInit {
         error: (err) => {
           console.log(err);
         },
-      }); // <<<<< Percentage of uploading is given
+      }); 
 
       (await this.task).ref.getDownloadURL().then((url) => {
         console.log(url);
