@@ -20,6 +20,7 @@ export class ChatWindowComponent implements OnInit {
   isEditing: boolean = false;
   chatMsg!: Message;
   user: any;
+  newConvFirstMessage!: Message;
   @ViewChild('inputField') inputField!: ElementRef<HTMLInputElement>;
 
   constructor(
@@ -30,13 +31,17 @@ export class ChatWindowComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    console.log(this.currentConversation);
+
+    this.handelSubmit().then((res: any) => console.log(res));
+
     this.chatWindowService.getConversations().subscribe({
       next: (data: any) => {
         this.conversations = data;
         this.currentConversation = this.conversations.find(
           (conv) => conv.id === this.queryParam
         );
-        console.log(this.currentConversation);
+        // console.log(this.currentConversation);
         // Set the current conv messages
         this.currentConversationMessages = this.currentConversation?.messages;
 
@@ -61,14 +66,15 @@ export class ChatWindowComponent implements OnInit {
     this.currentConversationMessages = [];
     this.router.navigate(['/user/messages']).then(() => {
       // Reload the page
-      console.log(this.currentConversation);
+      // console.log(this.currentConversation);
       window.location.reload();
     });
   };
 
   onAskClick = () => {
     if (this.user) {
-      if (!this.currentConversation) {
+      console.log(this.currentConversation);
+      if (this.currentConversation === undefined || !this.currentConversation) {
         let date: string | Date = new Date();
         date = date.toISOString();
         let conversation: any = {
@@ -83,6 +89,18 @@ export class ChatWindowComponent implements OnInit {
           this.chatWindowService.createConversation(conversation).subscribe({
             next: (res: any) => {
               this.conversations.push(res);
+              this.router
+                .navigate([], { queryParams: { ['id']: res.id } })
+                .then(() => {
+                  console.log(res);
+                  // Callback function to be executed after navigation
+                  this.handelSubmit().then((res: any) => console.log(res));
+                  // window.location.reload();
+                })
+                .catch((error) => {
+                  // Handle any error that occurs during navigation
+                  console.error(error);
+                });
               return res;
             },
             error: (err: Error) => {
@@ -91,6 +109,7 @@ export class ChatWindowComponent implements OnInit {
           });
         }
       } else {
+        console.log('fuck here we go again');
         this.handelSubmit().then((res: any) => console.log(res));
       }
     }
@@ -99,17 +118,22 @@ export class ChatWindowComponent implements OnInit {
   onDeleteClick = (event: Event, id: string) => {
     event.preventDefault();
     event.stopPropagation();
-    this.chatWindowService.deleteConversation(id).subscribe({
-      next: (res) => {
-        let newConversations = this.conversations.filter(
-          (item) => item.id !== id
-        );
-        this.conversations = newConversations;
-      },
-      error: (err) => {
-        console.log(err);
-      },
-    });
+    const confirm: boolean = window.confirm(
+      'Are you sure you want to delete it! 🔴🧺'
+    );
+    if (confirm) {
+      this.chatWindowService.deleteConversation(id).subscribe({
+        next: (res) => {
+          let newConversations = this.conversations.filter(
+            (item) => item.id !== id
+          );
+          this.conversations = newConversations;
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+    }
   };
 
   toggleEditing = (event: Event) => {
@@ -168,12 +192,25 @@ export class ChatWindowComponent implements OnInit {
           question: qst,
           date: new Date(),
         });
+      } else {
+        this.currentConversationMessages = [];
+        this.currentConversationMessages.push({
+          conversationId: this.queryParam,
+          userId: this.user.id,
+          question: qst,
+          date: new Date(),
+        });
       }
 
       let resp = await this.chatSerivce.getdAnswers(qst);
       resp.subscribe({
         next: (answer: any) => {
-          if (this.currentConversationMessages)
+          let message!: Message;
+
+          if (
+            this.currentConversationMessages !== undefined &&
+            this.currentConversationMessages?.length > 1
+          )
             this.currentConversationMessages =
               this.currentConversationMessages.map((msg: Message) => {
                 if (
@@ -181,11 +218,38 @@ export class ChatWindowComponent implements OnInit {
                   msg.conversationId === this.queryParam
                 ) {
                   this.question = '';
+                  message = { ...msg, answer: answer.content };
                   return { ...msg, answer: answer.content };
                 } else {
                   return msg;
                 }
               });
+          else {
+            this.question = '';
+            if (
+              this.currentConversationMessages &&
+              this.currentConversationMessages[0] !== undefined
+            ) {
+              (this.currentConversationMessages[0] as Message).conversationId =
+                this.queryParam;
+              (this.currentConversationMessages[0] as Message).answer =
+                answer.content;
+              message = this.currentConversationMessages[0];
+              this.newConvFirstMessage = message;
+              console.log('🚒🚒🚒', this.currentConversationMessages, message);
+            }
+          }
+
+          this.chatWindowService
+            .addConversationMessage(message, this.queryParam)
+            .subscribe({
+              next: (res) => {
+                return res;
+              },
+              error: (err) => {
+                console.log(err);
+              },
+            });
         },
         error: (err: any) => {
           console.log(err);
@@ -194,3 +258,21 @@ export class ChatWindowComponent implements OnInit {
     }
   };
 }
+
+// if (
+//   this.currentConversation != undefined &&
+//   (this.currentConversation?.messages === null ||
+//     this.currentConversation?.messages.length === 0)
+// ) {
+//   this.chatWindowService
+//     .addConversationMessage(this.newConvFirstMessage, this.queryParam)
+//     .subscribe({
+//       next: (res) => {
+//         console.log('🚍🚍🚍🚍', res);
+//         return res;
+//       },
+//       error: (err) => {
+//         console.log(err);
+//       },
+//     });
+// }

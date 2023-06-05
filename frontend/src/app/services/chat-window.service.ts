@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, map, of, throwError } from 'rxjs';
 import { Conversation } from '../models/Conversation';
+import { Message } from '../models/Message';
 
 @Injectable({
   providedIn: 'root',
@@ -67,6 +68,27 @@ export class ChatWindowService {
     return this.http.put(
       'http://localhost:8080/api/conversations/' + id,
       JSON.stringify({ name }),
+      options
+    );
+  }
+
+  public addConversationMessage(message: Message, id: string) {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.authenticatedUser.jwtToken}`,
+    });
+
+    let headers1 = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${this.authenticatedUser.jwtToken}`,
+    });
+    let options = { headers: headers1 };
+    let body = {
+      messages: [message],
+    };
+
+    return this.http.put(
+      'http://localhost:8080/api/conversations/' + id,
+      JSON.stringify(body),
       options
     );
   }
