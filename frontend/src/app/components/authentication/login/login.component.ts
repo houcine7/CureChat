@@ -44,7 +44,9 @@ export class LoginComponent implements OnInit {
       this.authService.loging(data).subscribe({
         next: (res) => {
           localStorage.setItem('user', JSON.stringify(res));
-          this.router.navigateByUrl('user/messages');
+          this.router.navigateByUrl('user/messages').then(() => {
+            window.location.reload();
+          });
         },
         error: (err) => {
           this.errorMessage = 'Bad credentials';

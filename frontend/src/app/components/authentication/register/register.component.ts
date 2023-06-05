@@ -106,7 +106,9 @@ export class RegisterComponent implements OnInit {
         next: (res) => {
           console.log(res);
           localStorage.setItem('user', JSON.stringify(res));
-          this.router.navigateByUrl('/user/messages');
+          this.router.navigateByUrl('/user/messages').then(() => {
+            window.location.reload();
+          });
         },
         error: (err) => {
           this.isTaskFaild = true;

@@ -34,7 +34,7 @@
             class="absolute -bottom-1 left-0 w-0 h-0.5 transition-all bg-blue-400 group-hover:w-full"
           ></span>
         </li>
-        <li class="text-lg font-light group relative">
+        <li *ngIf="userAuthenticated" class="text-lg font-light group relative">
           <a routerLink="/user/messages">Messages</a>
           <span
             class="absolute -bottom-1 left-0 w-0 h-0.5 transition-all bg-blue-400 group-hover:w-full"
@@ -43,7 +43,26 @@
       </ul>
     </div>
 
-    <div class="">
+    <div class="flex gap-3 items-center justify-center">
+      <a
+        *ngIf="!userAuthenticated"
+        routerLink="/auth/login"
+        class="bg-blue-400 px-2 py-1 rounded border-[1px] border-gray-500 hover:bg-blue-500 text-white"
+        >Login</a
+      >
+      <a
+        *ngIf="!userAuthenticated"
+        routerLink="/auth/register"
+        class="bg-blue-400 px-2 py-1 rounded border-[1px] border-gray-500 hover:bg-blue-500 text-white"
+        >Signup</a
+      >
+      <span *ngIf="userAuthenticated" class="font-medium">{{ username }}</span>
+      <img
+        *ngIf="userAuthenticated"
+        [src]="userAvatar"
+        alt="profile picture "
+        class="w-9 h-9"
+      />
       <button
         class="btn2 text-gray-600 bg-gray-50 border-gray-50 px-3 py-2 rounded shadow relative border font-semibold overflow-hidden hover:text-white"
         type="button"

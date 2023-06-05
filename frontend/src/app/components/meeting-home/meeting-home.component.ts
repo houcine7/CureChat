@@ -9,9 +9,16 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./meeting-home.component.css'],
 })
 export class MeetingHomeComponent {
+  userAuthenticated: boolean = false;
+  username!: string;
   userAvatar!: string;
   constructor(private router: Router, private userService: UserService) {
-    this.userAvatar = this.userService.getAvatr();
+    this.username = this.userService.getUsername();
+    this.userAuthenticated = this.username?.length > 0;
+    this.userAvatar =
+      this.userService.getAvatr() !== null
+        ? this.userService.getAvatr()
+        : '/assets/user.png';
   }
 
   ngOnInit(): void {}
