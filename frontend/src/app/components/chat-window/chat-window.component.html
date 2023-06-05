@@ -4,7 +4,9 @@
   <div class="bg-gray-600 h-full w-full col-span-1 mx-auto">
     <div>
       <div class="flex flex-col justify-center items-center py-3 px-2">
-        <p class="mb-2">Hello <span class="font-bold">User77</span></p>
+        <p class="mb-2">
+          Hello <span class="font-bold">{{ this.user.username }}</span>
+        </p>
 
         <button
           (click)="onCreateNewConversationClick()"
@@ -23,7 +25,7 @@
             *ngFor="let conversation of conversations"
           >
             <a
-              [href]="'/user/messages?id=' + conversation.id"
+              (click)="handelNavigate(conversation.id)"
               class="flex gap-2 flex-wrap"
             >
               <i class="bi bi-clock-history"></i>
@@ -32,14 +34,14 @@
                 *ngIf="isEditing"
                 type="text"
                 [(ngModel)]="currentConversation!.name"
-                class="max-w-[7rem] rounded bg-gray-200 border border-gray-600 focus:border-blue-500 focus:ring-blue-500 focus:outline-none rounded-md px-4 py-2"
+                class="max-w-[7rem] bg-gray-200 border border-gray-600 focus:border-blue-500 focus:ring-blue-500 focus:outline-none rounded-md px-4 py-2"
                 (click)="$event.stopPropagation()"
                 (mousedown)="$event.stopPropagation()"
                 #inputField
               />
               <div class="flex gap-1">
                 <button
-                  (click)="onDeleteClick($event, conversation.id)"
+                  (click)="onDeleteClick(conversation.id)"
                   class="hover:bg-blue-300 p-1 rounded"
                 >
                   <i class="bi bi-trash-fill"></i>
@@ -47,14 +49,14 @@
                 <button
                   *ngIf="!isEditing"
                   class="hover:bg-blue-300 p-1 rounded"
-                  (click)="toggleEditing($event)"
+                  (click)="toggleEditing(conversation.id)"
                 >
                   <i class="bi bi-pencil-fill"></i>
                 </button>
                 <button
                   *ngIf="isEditing"
                   class="hover:bg-blue-300 p-1 rounded"
-                  (click)="onEditClick($event, currentConversation!.id)"
+                  (click)="onEditClick(currentConversation!.id)"
                 >
                   <i class="bi bi-check-lg hover:bg-blue-300 p-1 rounded"></i>
                 </button>
@@ -69,6 +71,15 @@
     class="current-chat bg-gray-700 w-full h-full col-span-5 px-10 py-10 relative overflow-hidden"
   >
     <div class="h-chat-messages overflow-y-auto overflow-x-hidden messages">
+      <div class="flex justify-center">
+        <div
+          *ngIf="this.currentConversationMessages.length === 0"
+          class="w-[500px] flex justify-center"
+        >
+          <img src="/assets/no-data.png" alt="" />
+        </div>
+      </div>
+
       <div
         class="message-container"
         *ngFor="let message of currentConversationMessages"
@@ -78,13 +89,13 @@
             <p
               class="question py-2 px-3 bg-blue-300 float-right rounded-t-2xl rounded-bl-2xl w-fit mb-6 h-fit"
             >
-              <!-- I have a question for youca you pleas tell me Lorem ipsum dolor
-              sit amet consectetur adipisicing elit. Aliquam consequatur veniam,
-              exercitationem veritatis eum hic accusantium rem deleniti dolor
-              quisquam itaque sequi repellat voluptatum rerum ver -->
               {{ message.question }}
             </p>
-            <img src="assets/user.png" alt="" class="w-9" />
+            <img
+              [src]="this.user.avatar"
+              alt=""
+              class="rounded-full w-10 h-9"
+            />
           </div>
 
           <!--  -->
@@ -93,10 +104,6 @@
             <p
               class="px-3 answer message float-left py-1 bg-blue-200 rounded-t-2xl rounded-br-2xl w-fit mb-4 h-fit ml-auto"
             >
-              <!-- this the provided answer by the gpt-3 API Lorem ipsum dolor sit
-              amet consectetur adipisicing elit. Maxime vero neque quasi ipsa
-              dicta explicabo iure deleniti, voluptatibus ullam natus amet
-              quisquam esse minus officia, expedita ut eligendi omnis provident. -->
               {{ message.answer }}
             </p>
           </div>

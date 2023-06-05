@@ -12,12 +12,13 @@ import { ChatService } from 'src/app/services/chat.service';
 })
 export class ChatWindowComponent implements OnInit {
   conversations: Array<Conversation> = [];
-  currentConversationMessages: Array<Message> | undefined = [];
+  currentConversationMessages: Array<Message> = [];
   errorMessage!: Error;
   queryParam: string = '';
   currentConversation!: Conversation | undefined;
   question: string = '';
   isEditing: boolean = false;
+  editId: string = '';
   chatMsg!: Message;
   user: any;
   newConvFirstMessage!: Message;
@@ -32,8 +33,9 @@ export class ChatWindowComponent implements OnInit {
 
   ngOnInit() {
     console.log(this.currentConversation);
+    console.log('heeere');
 
-    this.handelSubmit().then((res: any) => console.log(res));
+    //this.handelSubmit().then((res: any) => console.log(res));
 
     this.chatWindowService.getConversations().subscribe({
       next: (data: any) => {
@@ -43,7 +45,11 @@ export class ChatWindowComponent implements OnInit {
         );
         // console.log(this.currentConversation);
         // Set the current conv messages
-        this.currentConversationMessages = this.currentConversation?.messages;
+        this.currentConversationMessages =
+          this.currentConversation?.messages !== undefined &&
+          this.currentConversation.messages != null
+            ? this.currentConversation?.messages
+            : [];
 
         // Getting the authenticated user if there's one
         const userData = window.localStorage.getItem('user');
@@ -58,10 +64,40 @@ export class ChatWindowComponent implements OnInit {
 
     // Watching queryParam changes
     this.route.queryParams.subscribe((params) => {
+      console.log(params);
+
       this.queryParam = params['id']; // Get the value of the 'id' parameter
     });
   }
 
+  handelNavigate = (id: string): void => {
+    this.router.navigateByUrl('/user/messages?id=' + id);
+
+    this.chatWindowService.getConversations().subscribe({
+      next: (data: any) => {
+        this.conversations = data;
+        this.currentConversation = this.conversations.find(
+          (conv) => conv.id === this.queryParam
+        );
+        // console.log(this.currentConversation);
+        // Set the current conv messages
+        this.currentConversationMessages =
+          this.currentConversation?.messages !== undefined &&
+          this.currentConversation.messages != null
+            ? this.currentConversation?.messages
+            : [];
+
+        // Getting the authenticated user if there's one
+        const userData = window.localStorage.getItem('user');
+        if (userData) {
+          this.user = JSON.parse(userData);
+        }
+      },
+      error: (err: Error) => {
+        this.errorMessage = err;
+      },
+    });
+  };
   onCreateNewConversationClick = () => {
     this.currentConversationMessages = [];
     this.router.navigate(['/user/messages']).then(() => {
@@ -77,47 +113,56 @@ export class ChatWindowComponent implements OnInit {
       if (this.currentConversation === undefined || !this.currentConversation) {
         let date: string | Date = new Date();
         date = date.toISOString();
+
         let conversation: any = {
           name: '',
           userId: this.user.id,
           startDate: date,
         };
-        if (this.question.length > 4) {
+
+        console.log(this.question);
+
+        if (this.question.length >= 10) {
+          console.log('>=10');
+
           conversation.name = this.question.substring(0, 10);
-        }
-        if (!(conversation?.name === '') || !(conversation.userId === '')) {
-          this.chatWindowService.createConversation(conversation).subscribe({
-            next: (res: any) => {
-              this.conversations.push(res);
-              this.router
-                .navigate([], { queryParams: { ['id']: res.id } })
-                .then(() => {
-                  console.log(res);
-                  // Callback function to be executed after navigation
-                  this.handelSubmit().then((res: any) => console.log(res));
-                  // window.location.reload();
-                })
-                .catch((error) => {
-                  // Handle any error that occurs during navigation
-                  console.error(error);
-                });
-              return res;
-            },
-            error: (err: Error) => {
-              console.log(err);
-            },
-          });
+
+          if (!(conversation?.name === '') || !(conversation.userId === '')) {
+            this.chatWindowService.createConversation(conversation).subscribe({
+              next: (res: any) => {
+                console.log(res);
+                this.currentConversation = res.id;
+                this.conversations.push(res);
+
+                this.router
+                  .navigate([], { queryParams: { ['id']: res.id } })
+                  .then(async () => {
+                    console.log(res);
+                    // Callback function to be executed after navigation
+                    this.handelSubmit();
+                    // window.location.reload();
+                  })
+                  .catch((error) => {
+                    // Handle any error that occurs during navigation
+                    console.error(error);
+                  });
+                return res;
+              },
+              error: (err: Error) => {
+                console.log(err);
+              },
+            });
+          }
+        } else {
+          this.handelSubmit().then((res: any) => console.log(res));
         }
       } else {
-        console.log('fuck here we go again');
-        this.handelSubmit().then((res: any) => console.log(res));
+        this.handelSubmit();
       }
     }
   };
 
-  onDeleteClick = (event: Event, id: string) => {
-    event.preventDefault();
-    event.stopPropagation();
+  onDeleteClick = (id: string) => {
     const confirm: boolean = window.confirm(
       'Are you sure you want to delete it! 🔴🧺'
     );
@@ -136,24 +181,18 @@ export class ChatWindowComponent implements OnInit {
     }
   };
 
-  toggleEditing = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
+  toggleEditing = (id: string) => {
     if (
       this.currentConversation !== undefined &&
       this.currentConversation.id === this.queryParam
     )
       this.isEditing = true;
+    this.editId == id;
 
     // Move focus to the input field
-    setTimeout(() => {
-      this.inputField.nativeElement.focus();
-    });
   };
 
-  onEditClick = (event: Event, id: string) => {
-    event.preventDefault();
-    event.stopPropagation();
+  onEditClick = (id: string) => {
     if (
       this.currentConversation !== undefined &&
       this.currentConversation?.name !== ''
@@ -170,8 +209,16 @@ export class ChatWindowComponent implements OnInit {
               ...(this.currentConversation as Conversation), // Type assertion to Conversation
               name: res?.name as string,
             };
+            this.conversations = this.conversations.map((c) => {
+              if (c.id == id) {
+                return updatedConversation;
+              } else {
+                return c;
+              }
+            });
 
             this.isEditing = false;
+            this.editId == '';
           },
           error: (err) => {
             console.log(err);
@@ -184,78 +231,46 @@ export class ChatWindowComponent implements OnInit {
     //
     const qst = this.question;
 
+    console.log(qst);
+
     if (qst != null && qst != undefined && qst.length >= 10) {
-      if (this.currentConversationMessages) {
-        this.currentConversationMessages.push({
-          conversationId: this.queryParam,
-          userId: this.user.id,
-          question: qst,
-          date: new Date(),
-        });
-      } else {
-        this.currentConversationMessages = [];
-        this.currentConversationMessages.push({
-          conversationId: this.queryParam,
-          userId: this.user.id,
-          question: qst,
-          date: new Date(),
-        });
-      }
-
-      let resp = await this.chatSerivce.getdAnswers(qst);
-      resp.subscribe({
-        next: (answer: any) => {
-          let message!: Message;
-
-          if (
-            this.currentConversationMessages !== undefined &&
-            this.currentConversationMessages?.length > 1
-          )
-            this.currentConversationMessages =
-              this.currentConversationMessages.map((msg: Message) => {
-                if (
-                  msg.question == this.question &&
-                  msg.conversationId === this.queryParam
-                ) {
-                  this.question = '';
-                  message = { ...msg, answer: answer.content };
-                  return { ...msg, answer: answer.content };
-                } else {
-                  return msg;
-                }
-              });
-          else {
-            this.question = '';
-            if (
-              this.currentConversationMessages &&
-              this.currentConversationMessages[0] !== undefined
-            ) {
-              (this.currentConversationMessages[0] as Message).conversationId =
-                this.queryParam;
-              (this.currentConversationMessages[0] as Message).answer =
-                answer.content;
-              message = this.currentConversationMessages[0];
-              this.newConvFirstMessage = message;
-              console.log('🚒🚒🚒', this.currentConversationMessages, message);
-            }
-          }
-
-          this.chatWindowService
-            .addConversationMessage(message, this.queryParam)
-            .subscribe({
-              next: (res) => {
-                return res;
-              },
-              error: (err) => {
-                console.log(err);
-              },
-            });
-        },
-        error: (err: any) => {
-          console.log(err);
-        },
+      this.currentConversationMessages.push({
+        userId: this.user.id,
+        question: qst,
+        date: new Date(),
       });
     }
+
+    let resp = await this.chatSerivce.getdAnswers(qst);
+
+    resp.subscribe({
+      next: (answer: any) => {
+        let message!: Message;
+
+        const lastMessage = this.currentConversationMessages.pop();
+
+        (lastMessage as Message).answer = answer?.content;
+
+        this.currentConversationMessages.push(lastMessage as Message);
+
+        console.log('before');
+
+        this.chatWindowService
+          .addConversationMessage(lastMessage as Message, this.queryParam)
+          .subscribe({
+            next: (res) => {
+              console.log(res);
+              return res;
+            },
+            error: (err) => {
+              console.log(err);
+            },
+          });
+      },
+      error: (err: any) => {
+        console.log(err);
+      },
+    });
   };
 }
 

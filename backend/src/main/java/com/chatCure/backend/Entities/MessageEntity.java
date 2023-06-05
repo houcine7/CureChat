@@ -18,7 +18,6 @@ public class MessageEntity {
 
     private String question;
     private String answer;
-    private String conversationId;
     private String userId;
 
     private Date date;

@@ -49,23 +49,30 @@ public class ConversationController {
     // Update an existing conversation
     @PutMapping("/{id}")
     public ResponseEntity<ConversationEntity> updateConversation(@PathVariable("id") String id, @RequestBody ConversationEntity conversation) {
-        Optional<ConversationEntity> existingConversation = conversationRepository.findById(id);
-        if (existingConversation.isPresent()) {
-            List<MessageEntity> existingMessages = existingConversation.get().getMessages();
-            if (existingMessages != null) {
-                List<MessageEntity> newMessages = conversation.getMessages();
-                if (newMessages != null) {
+        ConversationEntity existingConversation = conversationRepository.findById(id).orElseThrow();
+
+
+            List<MessageEntity> existingMessages = existingConversation.getMessages();
+            List<MessageEntity> newMessages= conversation.getMessages() ;
+
+            System.out.println("liist messages getting");
+            if(
+                    newMessages!=null
+            ) {
+                if (existingMessages != null) {
+                    System.out.println("heeere 2");
                     existingMessages.addAll(newMessages);
+                    existingConversation.setMessages(existingMessages);
+                }else {
+                    System.out.println("heeere1 ++++ ");
+                    existingConversation.setMessages(newMessages);
                 }
             }
-            ConversationEntity existingConversationEntity = existingConversation.get();
-            if (conversation.getName()!=null) existingConversationEntity.setName(conversation.getName());
-            if(conversation.getUserId()!=null) existingConversationEntity.setUserId(conversation.getUserId());
-            ConversationEntity updatedConversation = conversationRepository.save(existingConversationEntity);
+
+            if (conversation.getName()!=null) existingConversation.setName(conversation.getName());
+            if(conversation.getUserId()!=null) existingConversation.setUserId(conversation.getUserId());
+            ConversationEntity updatedConversation = conversationRepository.save(existingConversation);
             return ResponseEntity.ok(updatedConversation);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
     }
 
     // Delete a conversation by ID

@@ -53,7 +53,7 @@ public class MessageController {
             if(message.getQuestion()!=null) updatedMessage.setQuestion(message.getQuestion());
             if (message.getAnswer()!=null) updatedMessage.setAnswer(message.getAnswer());
             if (message.getDate()!=null) updatedMessage.setDate(message.getDate());
-            if (message.getConversationId()!=null) updatedMessage.setConversationId(message.getConversationId());
+
 
             MessageEntity savedMessage = messageRepository.save(updatedMessage);
             return ResponseEntity.ok(savedMessage);
