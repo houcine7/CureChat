@@ -260,6 +260,7 @@ export class ChatWindowComponent implements OnInit {
           .subscribe({
             next: (res) => {
               console.log(res);
+              this.question = '';
               return res;
             },
             error: (err) => {
@@ -273,21 +274,3 @@ export class ChatWindowComponent implements OnInit {
     });
   };
 }
-
-// if (
-//   this.currentConversation != undefined &&
-//   (this.currentConversation?.messages === null ||
-//     this.currentConversation?.messages.length === 0)
-// ) {
-//   this.chatWindowService
-//     .addConversationMessage(this.newConvFirstMessage, this.queryParam)
-//     .subscribe({
-//       next: (res) => {
-//         console.log('🚍🚍🚍🚍', res);
-//         return res;
-//       },
-//       error: (err) => {
-//         console.log(err);
-//       },
-//     });
-// }

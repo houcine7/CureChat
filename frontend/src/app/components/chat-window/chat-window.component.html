@@ -94,18 +94,23 @@
             <img
               [src]="this.user.avatar"
               alt=""
-              class="rounded-full w-10 h-9"
+              class="rounded-full w-10 h-10"
             />
           </div>
 
           <!--  -->
 
-          <div class="px-3 pr-8 flex">
+          <div class="px-3 pr-8 flex gap-2 justify-end items-start">
             <p
               class="px-3 answer message float-left py-1 bg-blue-200 rounded-t-2xl rounded-br-2xl w-fit mb-4 h-fit ml-auto"
             >
               {{ message.answer }}
             </p>
+            <img
+              src="/assets/bot.png"
+              alt="bot pic"
+              class="rounded-full w-12 h-12"
+            />
           </div>
         </div>
 
