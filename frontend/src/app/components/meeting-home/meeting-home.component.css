@@ -1,6 +1,5 @@
 :host {
   display: block;
-  background-color: #37a5ff38;
   height: 100vh;
 }
 
@@ -9,7 +8,6 @@
   justify-content: space-between;
   align-content: center;
   align-items: center;
-  background-color: #9dd3ffe5;
 }
 
 .list-menu {
@@ -26,7 +24,6 @@
   }
 
   .uil {
-    color: #004985;
     font-size: 1.5rem;
   }
 }
@@ -70,9 +67,6 @@
   justify-content: center;
   align-items: center;
   align-content: center;
-  background-color: rgb(48, 201, 86);
-  border-radius: 0.5rem;
-  box-shadow: 0 0.5px 10px rgba(0, 0, 0, 0.05), 0 4px 80px rgba(0, 0, 0, 0.1);
   border: solid 3px rgb(255 255 255 / 59%);
   width: 10rem;
   height: 10rem;
@@ -81,6 +75,5 @@
 }
 
 .wrapper-body .block .btn-block:hover {
-  opacity: 0.45;
   transition: all ease 300ms;
 }

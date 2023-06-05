@@ -1,32 +1,41 @@
-<div class="header animate__animated animate__fadeIn">
+<div class="header animate__animated animate__fadeIn shadow bg-gray-300">
   <div class="section">
     <a class="title" routerLink="/">MEETING SPACE</a>
   </div>
   <div class="section">
     <ul class="list-menu">
       <li class="btn-menu">
-        <i class="uil uil-estate"></i>
-      </li>
-      <li class="btn-menu">
-        <i class="uil uil-share"></i>
+        <a
+          routerLink="/"
+          class="flex items-center text-lg font-semibold text-gray-900"
+        >
+          <img class="w-8 h-8 mr-2" src="assets/chat.png" alt="logo" />
+          CureChat
+        </a>
       </li>
     </ul>
   </div>
   <div class="section">
     <div class="wrapper-avatar">
-      <img
-        src="https://avatars.githubusercontent.com/u/15802366?s=460&u=ac6cc646599f2ed6c4699a74b15192a29177f85a&v=4"
-        alt=""
-      />
+      <img [src]="userAvatar" alt="avatar" />
     </div>
   </div>
 </div>
 
-<div class="wrapper-body">
-  <div class="block animate__animated animate__fadeIn" (click)="goToRoom()">
-    <div class="btn-block">
-      <i class="uil uil-video"></i>
+<div class="flex justify-evenly w-full items-center pt-16">
+  <div class="wrapper-body col-span-1">
+    <div
+      class="block animate__animated animate__fadeIn pt-10"
+      (click)="goToRoom()"
+    >
+      <div class="btn-block bg-blue-500 shadow-xl hover:bg-blue-700">
+        <i class="uil uil-video"></i>
+      </div>
+      <div class="text-xl font-bold text-center">New meeting</div>
     </div>
-    <div class="label-title">New meeting</div>
+  </div>
+
+  <div class="col-span-1 w-full max-w-[500px] flex justify-center">
+    <img src="assets/meet.png" width="w-fit" alt="avatar" />
   </div>
 </div>
