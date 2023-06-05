@@ -110,7 +110,7 @@ export class ChatWindowComponent implements OnInit {
   onAskClick = () => {
     if (this.user) {
       console.log(this.currentConversation);
-      if (this.currentConversation === undefined || !this.currentConversation) {
+      if (this.currentConversation === undefined) {
         let date: string | Date = new Date();
         date = date.toISOString();
 

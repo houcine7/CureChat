@@ -19,7 +19,6 @@ public class ConversationController {
     @Autowired
     private ConversationRepository conversationRepository;
 
-
     // Get all conversations
     @GetMapping
     public ResponseEntity<List<ConversationEntity>> getAllConversations() {
@@ -38,7 +37,7 @@ public class ConversationController {
     @PostMapping
     public ResponseEntity<ConversationEntity> createConversation(@RequestBody ConversationEntity conversation) {
         ConversationEntity savedConversation = conversationRepository.save(conversation);
-           return ResponseEntity.status(HttpStatus.CREATED).body(savedConversation);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedConversation);
     }
 
     @PostMapping("/1")
@@ -48,31 +47,31 @@ public class ConversationController {
 
     // Update an existing conversation
     @PutMapping("/{id}")
-    public ResponseEntity<ConversationEntity> updateConversation(@PathVariable("id") String id, @RequestBody ConversationEntity conversation) {
+    public ResponseEntity<ConversationEntity> updateConversation(@PathVariable("id") String id,
+            @RequestBody ConversationEntity conversation) {
         ConversationEntity existingConversation = conversationRepository.findById(id).orElseThrow();
 
+        List<MessageEntity> existingMessages = existingConversation.getMessages();
+        List<MessageEntity> newMessages = conversation.getMessages();
 
-            List<MessageEntity> existingMessages = existingConversation.getMessages();
-            List<MessageEntity> newMessages= conversation.getMessages() ;
-
-            System.out.println("liist messages getting");
-            if(
-                    newMessages!=null
-            ) {
-                if (existingMessages != null) {
-                    System.out.println("heeere 2");
-                    existingMessages.addAll(newMessages);
-                    existingConversation.setMessages(existingMessages);
-                }else {
-                    System.out.println("heeere1 ++++ ");
-                    existingConversation.setMessages(newMessages);
-                }
+        System.out.println("liist messages getting");
+        if (newMessages != null) {
+            if (existingMessages != null) {
+                System.out.println("heeere 2");
+                existingMessages.addAll(newMessages);
+                existingConversation.setMessages(existingMessages);
+            } else {
+                System.out.println("heeere1 ++++ ");
+                existingConversation.setMessages(newMessages);
             }
+        }
 
-            if (conversation.getName()!=null) existingConversation.setName(conversation.getName());
-            if(conversation.getUserId()!=null) existingConversation.setUserId(conversation.getUserId());
-            ConversationEntity updatedConversation = conversationRepository.save(existingConversation);
-            return ResponseEntity.ok(updatedConversation);
+        if (conversation.getName() != null)
+            existingConversation.setName(conversation.getName());
+        if (conversation.getUserId() != null)
+            existingConversation.setUserId(conversation.getUserId());
+        ConversationEntity updatedConversation = conversationRepository.save(existingConversation);
+        return ResponseEntity.ok(updatedConversation);
     }
 
     // Delete a conversation by ID
