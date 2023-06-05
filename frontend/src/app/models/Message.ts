@@ -1,7 +1,7 @@
 export interface Message {
-  id: string;
+  id?: string;
   question: string;
-  answer: string;
+  answer?: string;
   conversationId: string;
   userId: string;
   date: Date;

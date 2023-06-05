@@ -4,6 +4,6 @@ export interface Conversation {
   id: string;
   name: string;
   userId: string;
-  startDate: Date;
+  startDate: string;
   messages: Array<Message>;
 }
