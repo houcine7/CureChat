@@ -1,9 +1,3 @@
-
-# Project Title
-
-A brief description of what this project does and who it's for
-
-
 # CureChat App
 Welcome to CureChat App, a health assistance application that allows users to chat with a chatbot, make video calls, and have interactive conversations within a messaging space. This README file will provide you with an overview of the app's features, installation instructions, and other important details.
 
@@ -19,7 +13,7 @@ To run CureChat App locally on your machine, please follow these instructions:
 
 Clone the repository from GitHub:
 
-    git clone https://github.com/your-username/curechat-app.git
+    git clone https://github.com/guizo792/curechat-app.git
 Install the required dependencies:
 #### Frontend :
     cd curechat/frontend
